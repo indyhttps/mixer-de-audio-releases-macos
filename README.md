@@ -4,9 +4,11 @@ O Mixer altera sua voz em tempo real e entrega o resultado a chamadas, gravaçõ
 
 Baixe o **mixer-de-audio-macos.zip** na [release mais recente](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest). O pacote contém aplicativo universal, driver, desinstalador e documentação. Requisitos: **macOS 15 ou mais novo**, Apple Silicon ou Intel.
 
-## Versão 5.11.1
+## Versão 5.11.2
 
-Este manual descreve a versão 5.11.1. A [página de releases](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases) informa quais versões já foram publicadas e disponibiliza seus pacotes e notas.
+Este manual descreve a versão 5.11.2. A [página de releases](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases) informa quais versões já foram publicadas e disponibiliza seus pacotes e notas.
+
+A versão 5.11.2 mantém uma única instalação definitiva em **/Applications/Mixer de Áudio.app**. Ao abrir essa instalação, o Mixer corrige seus registros e atalhos duplicados, preserva a posição do primeiro atalho no Dock e mantém os demais aplicativos.
 
 O aplicativo usa SwiftUI/AppKit, símbolos e materiais do sistema, tendo o [UI Kit oficial do macOS 27](https://developer.apple.com/design/resources/) como referência visual. O painel principal conserva a composição compacta e rolável da Central de Controle, com Liquid Glass nativo somente no fundo das superfícies; textos e controles são desenhados por cima. Preferências, Diagnóstico, Presets, Guia e Avisos usam formulários, listas e janelas nativas, com redimensionamento. A correção resolve cartões vazios, respeita Reduzir Transparência e Aumentar Contraste e usa materiais compatíveis nas versões anteriores do macOS.
 
@@ -16,11 +18,11 @@ O motor de voz, o preset calibrado, os ajustes de gate e o **driver 1.4** são p
 
 ## Instalar ou atualizar
 
-1. Extraia o ZIP e abra **Mixer de Áudio.app**, ou coloque-o em **Aplicativos**.
-2. Abra o aplicativo instalado e autorize o acesso ao microfone quando o macOS solicitar.
+1. Extraia o ZIP e abra **Mixer de Áudio.app**. O instalador coloca o aplicativo em **Aplicativos** e abre a instalação definitiva.
+2. Autorize o acesso ao microfone quando o macOS solicitar. Depois, abra o Mixer em **Aplicativos** ou pelo atalho no **Dock**.
 3. Se ainda estiver usando um driver anterior, confirme a instalação do **driver 1.4** na janela de administrador. Essa troca recarrega o serviço de áudio uma vez; faça fora de uma chamada e reabra o Safari depois. Quem já tem o driver 1.4 não precisa reinstalá-lo para esta correção.
 
-Encerre uma chamada antes de reiniciar o Mixer. A cópia externa mais nova instala o próprio aplicativo e abre a versão instalada. Uma cópia antiga guardada como atalho abre a instalada sem rebaixá-la.
+Encerre uma chamada antes de reiniciar o Mixer. A cópia externa mais nova instala ou atualiza o aplicativo e abre a versão instalada, sem rebaixá-la ao abrir uma cópia antiga. Depois de validar o destino, o programa remove o próprio instalador temporário para evitar outro ícone. Uma atualização cancelada ou falha mantém o instalador disponível para nova tentativa.
 
 A distribuição usa assinatura de código **ad-hoc**, com autenticação **Ed25519 do ZIP** para o updater. Developer ID e notarização Apple continuam pendentes; este pacote não é anunciado como notarizado. O manual dentro do ZIP descreve a abertura de um download confiável quando o macOS solicitar aprovação.
 
@@ -43,3 +45,4 @@ O diagnóstico gera relatório e ZIP no Mac. Somente **Enviar este relatório ao
 ## Desinstalar
 
 Use **Desinstalar** no painel ou **Desinstalar o Mixer de Áudio…** no menu da barra para remover apenas o aplicativo ou também seu driver. O pacote inclui o desinstalador das versões anteriores. Leia as opções antes de confirmar a remoção; dispositivos e programas de terceiros são preservados.
+
