@@ -1,53 +1,64 @@
-# Mixer de Áudio — downloads para macOS
+# Mixer de Áudio — manual 5.12.4
 
-**Acesso rápido:** [Baixar e instalar](#instalar-ou-atualizar) · [Configurar e usar](#configurar-e-usar) · [Validação atual](#validação-da-5123) · [Mapa do projeto](docs/INDEX.md) · [Histórico](docs/CHANGELOG.md)
+[![testes](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml/badge.svg)](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml)
 
-O Mixer altera sua voz em tempo real e entrega o resultado a chamadas, gravações e jogos pelo seu próprio microfone virtual. Este repositório distribui o aplicativo; o código-fonte permanece no [repositório privado do projeto](https://github.com/indyhttps/MixerDeAudio-macOS).
+**Acesso rápido:** [Instalar](#instalar) · [Configurar chamada](#configurar-a-chamada) · [Gate e monitor](#gate-canal-e-monitor) · [Presets e backup](#presets-backup-e-atraso) · [Diagnóstico](#quando-falta-som) · [Mapa do projeto](docs/INDEX.md)
 
-Baixe o **mixer-de-audio-macos.zip** na [release mais recente](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest). O pacote contém aplicativo universal, driver, desinstalador e documentação. Requisitos: **macOS 15 ou mais novo**, Apple Silicon ou Intel.
+O Mixer captura seu microfone real, altera a voz em tempo real e entrega o resultado para chamadas, gravações e jogos. O aplicativo fica na barra de menus do macOS e usa seu próprio driver virtual; não precisa de BlackHole.
 
-| Preciso… | Abrir |
-|---|---|
-| Baixar o aplicativo | [ZIP da release mais recente](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest/download/mixer-de-audio-macos.zip) |
-| Conferir a assinatura do pacote | [Assinatura Ed25519](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest/download/mixer-de-audio-macos.zip.sig) |
-| Consultar pacotes e notas anteriores | [Todas as releases](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases) |
-| Encontrar manuais e informações do projeto | [Mapa do projeto](docs/INDEX.md) |
+Baixe a versão publicada nas [releases públicas para macOS](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases). O driver já vem dentro do aplicativo. O [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases) também guarda os pacotes completos com código-fonte. Este manual acompanha o código 5.12.4; a página de downloads informa quais versões já foram publicadas.
 
-## Versão 5.12.3
+A distribuição usa o **driver 1.5**, recompilado do fonte. Ele oferece uma única entrada virtual: **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** passa a ter apenas a saída que alimenta esse microfone; deixa de aparecer como uma segunda entrada. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.4 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
 
-A [5.12.3 está publicada](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/tag/v5.12.3), com a limpeza e a organização do projeto. Esta atualização de manutenção organiza os manuais no [mapa do projeto](docs/INDEX.md) e remove cinco arquivos históricos do projeto: os testes e o workflow de uma skill de revisão, além de dois scripts antigos de remoção. O código do aplicativo, a interface, o processamento de voz e o driver 1.5 conservam o estado da 5.12.2. A limpeza dos caches locais de desenvolvimento não representa redução do aplicativo distribuído. As [notas 5.12.3](docs/releases/5.12.3.md) registram o escopo e a validação desta entrega.
+**A 5.12.4 corrige a desinstalação e o envio de suporte.** Cancelar a autorização preserva os aplicativos e o estado de usuário. A opção **Remover só o app** confere a remoção antes de limpar os dados e anunciar sucesso; o desinstalador externo espera a autorização antes de alterar login ou agregado legado e confirma a remoção antes da limpeza restante. O serviço de suporte passa a recusar um desafio que expire durante suas verificações, evitando o reenvio de um relatório já aceito. O visual aprovado, o processamento de voz e o driver 1.5 continuam preservados. As [notas 5.12.4](docs/releases/5.12.4.md) registram o escopo e a validação desta entrega.
 
-A [5.12.2 anterior](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/tag/v5.12.2) reduziu a espera nos buffers: captura e saída virtual solicitam ciclos menores, a fila acompanha as rajadas reais e mantém mais reserva para Bluetooth. A reserva aumenta se faltar áudio; falhas repetidas de prazo levam a ciclos maiores. As cópias do buffer circular também ficaram mais curtas.
+**A 5.12.2 reduz a espera nas filas de áudio.** O app solicita ciclos menores na taxa nativa do microfone e na saída virtual, dimensiona a reserva pelos ciclos concedidos e amplia essa reserva se faltar áudio. Se captura ou processamento perderem prazos repetidamente, os ciclos aumentam automaticamente. O motor WSOLA, o gate, o formato de áudio e os presets calibrados são preservados. O ganho depende do microfone e da carga do Mac; use **Preferências → Saúde e atraso → Medir atraso por 8 segundos** para comparar o caminho real até o microfone virtual. As [notas 5.12.2](docs/releases/5.12.2.md) registram a validação e seus limites.
 
-O processamento de voz, o reamostrador, o gate e o preset calibrado continuam iguais. Testes comparam o PCM por bits em diferentes tamanhos de blocos, taxas e transições. A versão conserva o **driver 1.5**, com uma única entrada virtual: **Mixer de Áudio — Microfone**. O dispositivo **Mixer de Áudio** tem somente a saída que alimenta esse microfone.
+A **5.12.1** simplifica a apresentação do microfone no painel: quando a fonte escolhida está em uso, seu nome aparece uma vez e a linha abaixo mostra **Em uso**. Ao seguir o padrão do sistema ou usar outra fonte temporariamente, a linha informa o nome realmente capturado. O rodapé usa uma cápsula de estado compacta; clique nela para ler os detalhes do áudio e os avisos. O painel conserva seu visual de vidro da Central de Controle, com as cinco ações distribuídas uniformemente. Essas alterações são de apresentação e conservam o driver 1.5 e o processamento de voz.
 
-Na validação da 5.12.2 com AirPods Pro 3, a estimativa caiu de 121,3 para 103–108 ms, conforme a reserva necessária. A medição de fala deu **90,0 ms**, confiança moderada e resolução de 5,0 ms, do microfone físico à entrada virtual; não inclui fones nem navegador/chamada. A usuária confirmou som preservado e sem estalos ou cortes ao ouvir a voz com o microfone do MacBook Pro. O ganho depende do hardware e da carga do Mac; as [notas 5.12.2](docs/releases/5.12.2.md) e a [matriz de compatibilidade](docs/COMPATIBILITY.md) registram os cenários e limites.
+Desde a **5.11.1**, o aplicativo usa SwiftUI/AppKit, símbolos e materiais do sistema, tomando o [UI Kit oficial do macOS 27](https://developer.apple.com/design/resources/) e as diretrizes da Apple como referências visuais. O painel principal conserva a composição compacta da Central de Controle, com Liquid Glass nativo aplicado somente ao fundo das superfícies; textos e controles são desenhados por cima. Preferências, Diagnóstico, Presets, Guia e Avisos usam formulários, listas e janelas nativas. A correção evita os cartões vazios e respeita Reduzir Transparência e Aumentar Contraste. O app continua na barra de menus e mantém compatibilidade com macOS 15+.
 
-O painel conserva a composição compacta da Central de Controle, com Liquid Glass nativo, a fonte **Em uso**, cinco ações distribuídas uniformemente e uma cápsula de estado no rodapé. Clique nela para ler os detalhes do áudio e os avisos; **Todos os avisos…** abre a janela nativa com histórico, rolagem e redimensionamento.
+## Instalar
 
-O aplicativo mantém uma única instalação definitiva em **/Applications/Mixer de Áudio.app**. A instalação valida o novo aplicativo e preserva a versão anterior até conferir a troca. Depois de validar o destino, o programa remove o próprio instalador temporário. Uma atualização cancelada ou falha mantém o instalador disponível para nova tentativa. Os registros e atalhos duplicados próprios são corrigidos, preservando os demais aplicativos e a posição do primeiro atalho no Dock.
+Requisitos: macOS 15 ou mais novo. A distribuição é preparada para Apple Silicon e Intel.
 
-## Instalar ou atualizar
+1. Extraia o ZIP e arraste **Mixer de Áudio.app** para **Aplicativos**.
+2. Abra o aplicativo. Se o macOS exigir aprovação de um pacote assinado ad-hoc, use botão direito → **Abrir**. Para um download confiável que seja bloqueado pela quarentena, o procedimento anterior de instalação é `xattr -dr com.apple.quarantine "/Applications/Mixer de Áudio.app"`, seguido de uma nova abertura.
+3. Confirme a instalação do dispositivo virtual. O macOS pede sua senha de administrador.
+4. Autorize o acesso ao microfone quando o macOS pedir.
 
-1. Extraia o ZIP e abra **Mixer de Áudio.app**. O instalador coloca o aplicativo em **Aplicativos** e abre a instalação definitiva.
-2. Autorize o acesso ao microfone quando o macOS solicitar. Depois, abra o Mixer em **Aplicativos** ou pelo atalho no **Dock**.
-3. Se estiver usando o driver 1.4 ou anterior, confirme a instalação do **driver 1.5** na janela de administrador. Essa troca recarrega o serviço de áudio; faça fora de uma chamada e reabra os aplicativos de áudio depois. Quem já tem o driver 1.5 não precisa trocá-lo para receber a atualização de manutenção 5.12.3.
+Desde a 5.11.2, abrir um instalador extraído instala ou atualiza o aplicativo em **Aplicativos** e remove o instalador temporário após validar o destino. Use o aplicativo em Aplicativos ou seu atalho no Dock para abrir o Mixer. Uma atualização cancelada ou falha mantém o instalador para nova tentativa.
 
-Encerre uma chamada antes de reiniciar o Mixer. A cópia externa mais nova instala ou atualiza o aplicativo e abre a versão instalada, sem rebaixá-la ao abrir uma cópia antiga.
+**Ao atualizar para a 5.12.0:** encerre os aplicativos que usam áudio, instale o novo driver e reabra-os. Se uma chamada ou gravação tinha **Mixer de Áudio** salvo como entrada, selecione **Mixer de Áudio — Microfone** nas configurações desse aplicativo. A antiga entrada deixa de existir e o Mixer não altera as preferências de outros programas. Quem já selecionava **Mixer de Áudio — Microfone** conserva a identidade desse dispositivo, embora um aplicativo possa exigir nova seleção após reiniciar o serviço de áudio.
 
-A distribuição usa assinatura de código **ad-hoc**, com autenticação **Ed25519 do ZIP** para o updater. Developer ID e notarização Apple continuam pendentes; este pacote não é anunciado como notarizado. O manual dentro do ZIP descreve a abertura de um download confiável quando o macOS solicitar aprovação.
+Antes de uma instalação limpa com remoção de preferências, use **Exportar configuração** e guarde o JSON fora da pasta do aplicativo. Depois de reinstalar, importe-o e conceda novamente as permissões de microfone e início no login. A configuração do microfone nos aplicativos de chamada deve ser conferida separadamente.
 
-## Configurar e usar
+A assinatura e a notarização de um pacote dependem do perfil usado na distribuição. A existência do perfil Developer ID no projeto não significa que um download já esteja assinado ou notarizado com ele.
 
-Escolha seu **microfone real** dentro do Mixer. Em **Meet/Safari, Discord, OBS, FaceTime e demais aplicativos**, selecione **Mixer de Áudio — Microfone** como entrada. Use seus fones ou alto-falantes físicos como saída; **Mixer de Áudio** é a saída interna de alimentação e não deve ser escolhida como saída da chamada.
+## Configurar a chamada
 
-No **FaceTime**, escolha o microfone dedicado no menu **Vídeo**. Para um app que usa a entrada padrão do Mac, selecione **Mixer de Áudio — Microfone** em **Ajustes do Sistema → Som → Entrada**. Nesse caso, mantenha um microfone físico fixado dentro do Mixer. Aplicativos com seleção própria podem exigir a escolha dentro deles.
+No painel, escolha seu **microfone real**. Quando ele está ativo, seu nome aparece uma vez, com **Em uso** abaixo. “Seguir padrão do sistema” acompanha a seleção do macOS e mostra **Em uso: nome do microfone**. Se a fonte escolhida ficar indisponível ou estiver sendo trocada, essa linha informa a fonte realmente capturada; sem captura, mostra **Em uso: nenhum**.
 
-Confira **Voz: Ligado**, **Microfone: Enviando**, a fonte **Em uso** e o medidor **Saída**. **Microfone: Mudo** interrompe o envio e **Voz: Desligado** desliga o processamento. **Voz Feminina** aplica a voz calibrada; **Neutro** volta aos valores originais. Os sliders permitem ajustar altura e timbre.
+| Aplicativo | Microfone a selecionar nele | Saída de som |
+|---|---|---|
+| Google Meet/Safari, Discord, OBS e demais aplicativos | **Mixer de Áudio — Microfone** | Seus fones ou alto-falantes físicos |
+| FaceTime | **Mixer de Áudio — Microfone**, no menu **Vídeo** | Seus fones ou alto-falantes físicos |
+| Apps que seguem a entrada padrão do macOS | **Mixer de Áudio — Microfone**, em **Ajustes do Sistema → Som → Entrada** | Seus fones ou alto-falantes físicos |
 
-As opções do painel abrem Preferências, Presets de voz e Guia. Os botões circulares **Fechar** e **Sair** escondem o painel mantendo o áudio ou encerram o aplicativo, respectivamente. **Reconectar** refaz o roteamento; **Diagnóstico** gera um relatório local para leitura.
+No FaceTime, abra o menu **Vídeo** na barra de menus e escolha o microfone dedicado. O seletor está descrito no [manual da Apple](https://support.apple.com/pt-br/guide/facetime/fctm26739220/mac). Para um app sem seletor que usa a entrada padrão, escolha o virtual nos [ajustes de entrada do macOS](https://support.apple.com/pt-br/guide/mac-help/mchlp2567/mac) e reabra o app se necessário. Aplicativos com seleção própria podem continuar exigindo a escolha dentro deles.
 
-Conecte AirPods antes de abrir o Safari. Se uma troca de fones durante a chamada interromper a voz, saia da chamada e reabra o Safari; a recuperação automática desse cenário ainda precisa de validação.
+**Ao usar o virtual como entrada padrão do Mac, mantenha um microfone físico escolhido dentro do Mixer**, como o microfone do MacBook ou seu USB/AirPods. Assim o Mixer captura a fonte real e o outro app recebe a voz processada. A linha **Em uso** confirma essa fonte. **Mixer de Áudio** é a saída de alimentação usada pelo motor e não deve ser escolhida como saída de som da chamada. A entrada única simplifica a seleção; os cenários de funcionamento já observados e os que ainda precisam de teste estão na [matriz de compatibilidade](docs/COMPATIBILITY.md).
+
+**AirPods e Safari:** conecte os fones antes de abrir o navegador. Se trocar ou conectar fones durante o Meet e perder a voz, saia da chamada, encerre e reabra o Safari. A recuperação automática desse cenário ainda precisa ser validada; confira a [matriz de compatibilidade](docs/COMPATIBILITY.md).
+
+## Usar o painel
+
+- Clique no ícone da barra de menus para abrir o painel; o botão direito abre o menu completo.
+- **Voz Feminina / Neutro** aplicam a voz calibrada ou retornam os controles para zero. **Altura (tom)** e **Timbre (formantes)** permitem ajustes finos. No motor WSOLA atual, os dois ajustes contribuem para a transposição combinada.
+- **Microfone: Mudo** interrompe o envio; **Enviando** indica a transmissão ativa. **Voz: Desligado** desliga o processamento; **Ligado** indica o motor ativo. O ícone da barra e o rodapé mostram o estado.
+- **Entrada** mostra o sinal cru; **Saída** mostra o sinal entregue pelo Mixer aos aplicativos. A recepção na chamada também depende da entrada selecionada no aplicativo.
+- Os botões circulares **Fechar** e **Sair** escondem o painel mantendo o áudio ou encerram o aplicativo, respectivamente. **Reconectar**, **Diagnóstico** e **Desinstalar** também ficam na linha de ações. O painel principal é compacto e rolável, com cabeçalho próprio para arrastar; as janelas auxiliares permitem redimensionar.
+- A cápsula no rodapé mostra estados curtos, como **Ativo**, **Microfone mudo** ou **Desligado**. Um aviso recente aparece como **Novo aviso**. Clique para abrir os detalhes do áudio e o aviso completo, apresentados com texto centralizado. **Todos os avisos…** abre **Estado e avisos**, uma janela compacta com estado atual e histórico centralizados; ela permite rolagem e redimensionamento. As mensagens usam inicial maiúscula, como **Ativo**, também nos detalhes. As opções do painel dão acesso a **Preferências**, **Presets de voz** e **Guia de uso**.
 
 ## Gate, canal e monitor
 
@@ -75,61 +86,35 @@ Em **Presets de voz**, salve a voz atual, renomeie, duplique ou atualize um pres
 
 Atualizações e telemetria podem ser controladas nas preferências. Uma atualização que troca o aplicativo precisa reiniciá-lo; faça isso fora da chamada. O diagnóstico local pode ser usado sem enviar relatório.
 
-## Validação da 5.12.3
-
-A validação local corresponde ao código do commit [`96d0a4b53fe5beafd78dcb3537b04b3cd306d384` — repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/commit/96d0a4b53fe5beafd78dcb3537b04b3cd306d384).
-
-| Verificação local | Resultado |
-|---|---|
-| Regressões Swift | 105 testes aprovados |
-| Manifestos, instalação e publicação | 29 testes Python aprovados |
-| Relay de suporte | 5 testes aprovados, SQLite em memória e transporte simulado |
-| Driver | Harnesses ASan/UBSan/TSan aprovados |
-| Instrumento de transporte | Self-test aprovado |
-| App e driver universais | arm64/x86_64, mínimo macOS 15.0 e assinaturas estritas válidas |
-
-Os quatro jobs do [CI do commit final — repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/37554012689) passaram. A tabela acima registra também as verificações locais do mesmo código.
-
-Os dois pacotes da 5.12.3 foram conferidos contra seus manifestos e publicados, com versão, commit, fonte e hashes dos binários vinculados. O ZIP público reúne aplicativo, driver, desinstalador e manuais, incluindo o mapa do projeto, e sua assinatura Ed25519 foi verificada. O publicador conferiu os três downloads e `releases/latest`.
-
-O ZIP público da 5.12.3 tem **1.851.494 bytes**. SHA-256:
-
-```text
-daaf23b50e3e87c0f010ec50d3f673d91416303109faae2be9252d93afff2199
-```
-
-Não houve nova instalação ou chamada real da 5.12.3 nesta entrega. As evidências anteriores e as pendências de campo permanecem nas [notas 5.12.2](docs/releases/5.12.2.md) e na [matriz de compatibilidade](docs/COMPATIBILITY.md).
-
-## Validação da 5.12.2 (histórico)
-
-Passaram **105 testes Swift**, **29 testes Python**, os harnesses do driver com **ASan/UBSan** e o concorrente com **TSan**. O [CI do commit final — repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/37546160133) concluiu com sucesso. A suíte Swift passou também com áudio ativo no aplicativo instalado.
-
-Os dois ZIPs foram conferidos contra seus manifestos, vinculados ao commit `6a5a6b2d4766016dc6e38d1e30db7b1c310f0c00`. O conteúdo completo do app instalado coincide com o pacote de distribuição, incluindo permissões; app e driver passaram na verificação de assinatura. A topologia confirma uma única entrada virtual, com o dispositivo de escrita separado. O pacote público inclui os manuais e as notas das versões, sem código-fonte.
-
-Na **5.12.0**, a usuária confirmou uma chamada real no **FaceTime** e uma **ligação do iPhone pelo Mac**. A 5.12.2 preserva o driver e o roteamento dessa versão; esses resultados não representam novas chamadas de teste da 5.12.2. A matriz de compatibilidade mantém as pendências de campo, incluindo Bluetooth sob interferência, hotplug prolongado, consumidores sem teste humano confirmado, macOS 15 e Intel físicos.
-
-O ZIP público da 5.12.2 tem **1.843.641 bytes**. SHA-256:
-
-```text
-c33b424ae32c9de1ab5bf3373ec9306e4de1ef27dcec35dded232d39572217f6
-```
-
-## Atualizações e privacidade
-
-As preferências controlam atualização e telemetria. A checagem ao abrir pode instalar uma versão nova verificada e reabrir o app; checagens periódicas avisam antes de reiniciar. O updater recusa ZIP sem assinatura válida e versões divergentes da tag.
-
-O diagnóstico gera relatório e ZIP no Mac. Somente **Enviar este relatório ao suporte** compartilha o texto revisado com o canal privado de suporte; nenhuma gravação de voz é incluída. Nomes, caminhos pessoais, UIDs, endereços Bluetooth e credenciais são redigidos. O destino secreto fica no servidor. O serviço rejeita formatos inválidos antes de enviar conteúdo ao suporte.
-
 ## Desinstalar
 
-Use **Desinstalar** no painel ou **Desinstalar o Mixer de Áudio…** no menu da barra para remover apenas o aplicativo ou também seu driver. O pacote inclui o desinstalador das versões anteriores. A identificação dos próprios bundles preserva BlackHole, Voicemod comercial e outros programas/plugins de terceiros. Leia as opções antes de confirmar a remoção.
+No painel, escolha **Desinstalar**, ou use **Desinstalar o Mixer de Áudio…** no menu da barra. É possível remover apenas o aplicativo ou remover também o driver. A remoção completa do driver pede autorização de administrador.
 
-## Documentação
+Se cancelar a autorização, os aplicativos e o estado de usuário são preservados. Em **Remover só o app**, a limpeza de estado depende da remoção confirmada dos bundles. O desinstalador externo executa a retirada do login e do agregado legado depois da autorização, antes de remover os arquivos; as demais limpezas dependem da remoção confirmada. Se a remoção autorizada falhar, login e agregado podem já ter sido alterados, e o aviso informa esse limite. Uma falha não produz a mensagem de sucesso.
 
-| Quero consultar… | Abrir |
+O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das versões anteriores e resíduos próprios. A identificação de aplicativos e do driver usa o bundle id exato; itens de login e atalhos são removidos pelos caminhos confirmados. BlackHole, Voicemod comercial e outros dispositivos/programas de terceiros são preservados.
+
+## Documentação do projeto
+
+| Preciso consultar… | Documento |
 |---|---|
-| Todas as partes do projeto | [Mapa do projeto](docs/INDEX.md) |
-| A entrega atual | [Notas 5.12.3 — limpeza e organização](docs/releases/5.12.3.md) |
-| Cenários conferidos e pendências | [Compatibilidade](docs/COMPATIBILITY.md) |
-| Arquitetura, testes e distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
-| Versões e decisões anteriores | [Histórico](docs/CHANGELOG.md) |
+| O mapa de todas as partes do projeto | [Mapa do projeto](docs/INDEX.md) |
+| A arquitetura, os testes e a distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
+| Os cenários conferidos e as pendências de campo | [Compatibilidade](docs/COMPATIBILITY.md) |
+| O histórico completo de versões | [Changelog](docs/CHANGELOG.md) |
+| A entrega atual | [Notas 5.12.4 — desinstalação e envio de suporte](docs/releases/5.12.4.md) |
+| As melhorias da 5.11.0 | [Registro das melhorias](docs/IMPROVEMENTS-5.11.0.md) |
+| As regras e os resultados de revisão | [CLAUDE — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
+
+### Releases anteriores
+
+| Versão | Assunto |
+|---|---|
+| [5.12.3](docs/releases/5.12.3.md) | Limpeza e organização do projeto |
+| [5.12.2](docs/releases/5.12.2.md) | Menor espera no áudio |
+| [5.12.1](docs/releases/5.12.1.md) | Microfone sem repetição e rodapé compacto |
+| [5.12.0](docs/releases/5.12.0.md) | Microfone único e driver 1.5 |
+| [5.11.2](docs/releases/5.11.2.md) | Instalação única |
+| [5.11.1](docs/releases/5.11.1.md) | Controles visíveis e janelas nativas |
+| [5.11.0](docs/releases/5.11.0.md) | Melhorias de configuração e confiabilidade |
+| [5.10.4](docs/releases/5.10.4.md) | Distribuição e verificações anteriores |

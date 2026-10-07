@@ -1,21 +1,21 @@
 # Mapa do projeto
 
-**Versão de manutenção:** 5.12.3 · **Driver:** 1.5 · **Mínimo:** macOS 15
+**Versão de manutenção:** 5.12.4 · **Driver:** 1.5 · **Mínimo:** macOS 15
 
-Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. O visual aprovado pela usuária, os controles e o processamento de voz são preservados nesta organização.
+Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.4 corrige o cancelamento da desinstalação e a expiração de desafios no envio de suporte, preservando o visual aprovado pela usuária, os controles e o processamento de voz.
 
 ## Por onde começar
 
 | Quero… | Abrir |
 |---|---|
 | Instalar ou usar o aplicativo | [Manual de uso](../README.md) |
-| Configurar microfone e chamada | [Configurar a chamada](../README.md#configurar-e-usar) |
+| Configurar microfone e chamada | [Configurar a chamada](../README.md#configurar-a-chamada) |
 | Ajustar gate, canal e monitor | [Gate, canal e monitor](../README.md#gate-canal-e-monitor) |
 | Guardar presets e configuração | [Presets, backup e atraso](../README.md#presets-backup-e-atraso) |
 | Resolver falta de som | [Roteiro de diagnóstico](../README.md#quando-falta-som) |
 | Entender o código e compilar | [Guia de desenvolvimento](DEVELOPMENT.md) |
 | Conferir cenários testados e pendentes | [Compatibilidade](COMPATIBILITY.md) |
-| Ver o escopo da entrega atual | [Notas 5.12.3](releases/5.12.3.md) |
+| Ver o escopo da entrega atual | [Notas 5.12.4](releases/5.12.4.md) |
 | Consultar decisões e versões anteriores | [Histórico](CHANGELOG.md) |
 
 ## Pastas e arquivos principais
@@ -96,8 +96,8 @@ Execute os comandos a partir da raiz do código-fonte. O [guia de desenvolviment
 | Rodar testes de manifesto, instalação e publicação | `python3 -m unittest discover -s Tests/Release -p 'test_*.py'` |
 | Compilar app e driver universais | `./build.sh` |
 | Preparar e validar os dois ZIPs | `./release.sh` |
-| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.3.md --dry-run` |
-| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.3.md` |
+| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.4.md --dry-run` |
+| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.4.md` |
 | Remover a própria instalação | `Desinstalar Mixer de Áudio.command` ou a opção Desinstalar no app |
 
 | Ferramentas em `tools/` | Responsabilidade |
@@ -134,7 +134,7 @@ Nenhum segredo, chave privada, relatório pessoal ou backup privado deve ser cop
 
 | Destino | O que fica nele |
 |---|---|
-| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.3.zip` |
+| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.4.zip` |
 | [GitHub público](https://github.com/indyhttps/mixer-de-audio-releases-macos) | README de downloads, manuais e releases de `mixer-de-audio-macos.zip` com assinatura `.sig` |
 | Sites | Hospedagem separada do relay de suporte, suas migrações e variáveis privadas |
 | Sentry | Metadados das versões e eventos técnicos do app, conforme a preferência de telemetria |
@@ -155,6 +155,7 @@ A mesma tag, versão e commit devem corresponder aos manifestos e pacotes. O REA
 
 | Release | Assunto |
 |---|---|
+| [5.12.4](releases/5.12.4.md) | Desinstalação e expiração de desafios no suporte |
 | [5.12.3](releases/5.12.3.md) | Limpeza e organização do projeto |
 | [5.12.2](releases/5.12.2.md) | Menor espera nos buffers e verificações de áudio |
 | [5.12.1](releases/5.12.1.md) | Apresentação do microfone e rodapé |
@@ -164,4 +165,4 @@ A mesma tag, versão e commit devem corresponder aos manifestos e pacotes. O REA
 | [5.11.0](releases/5.11.0.md) | Melhorias de configuração, diagnóstico e confiabilidade |
 | [5.10.4](releases/5.10.4.md) | Distribuição e verificações da versão anterior |
 
-Notas antigas preservam o contexto da versão em que foram escritas. As verificações da entrega atual ficam nas notas 5.12.3; confirmações humanas anteriores não são apresentadas como novos testes desta versão.
+Notas antigas preservam o contexto da versão em que foram escritas. As verificações da entrega atual ficam nas notas 5.12.4; confirmações humanas anteriores não são apresentadas como novos testes desta versão.

@@ -1,10 +1,10 @@
 # Desenvolvimento do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.3.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.4.md)
 
-Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.3. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
+Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.4. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
 
-A 5.12.3 limpa arquivos externos de revisão e scripts históricos de teste, além de organizar a navegação dos manuais no [mapa do projeto](INDEX.md). O código do aplicativo, DSP, visual aprovado e driver 1.5 conservam o estado da 5.12.2. Produtos de compilação, caches e dependências geradas do relay podem ser recompostos; sua limpeza não altera o tamanho do app distribuído. `.build/` também contém chaves, configuração de publicação, backups privados e artefatos de releases, que continuam necessários para manutenção e recuperação.
+A 5.12.4 corrige dois caminhos de cancelamento da desinstalação: a opção **Remover só o app** respeita o resultado da autorização e confere os bundles restantes; o desinstalador externo espera a autorização e revalida as identidades antes dos utilitários de login/agregado e da remoção, confirmando a ausência dos bundles antes da limpeza restante. O relay também revalida a expiração dos desafios depois das esperas no banco, antes de encaminhar relatórios. O DSP, os buffers, o visual aprovado e o driver 1.5 conservam o estado da 5.12.3. A organização dos manuais no [mapa do projeto](INDEX.md) permanece. Produtos de compilação, caches e dependências geradas do relay podem ser recompostos; sua limpeza não altera o tamanho do app distribuído. `.build/` também contém chaves, configuração de publicação, backups privados e artefatos de releases, que continuam necessários para manutenção e recuperação.
 
 ## Componentes e caminho do áudio
 
@@ -212,6 +212,18 @@ As fixtures de desinstalação exercitam o shell gerado somente contra bundles f
 Use [COMPATIBILITY.md](COMPATIBILITY.md) para distinguir observações anteriores de testes pendentes da versão atual. Valide instalação, reabertura, suspensão/retomada, troca de fonte/saída, mute, gate, monitor e consumidores simultâneos. Confirme a presença de uma única entrada do Mixer, a seleção dedicada em cada consumidor e a migração de seleções antigas. Inclua FaceTime e consumidores nativos que seguem a entrada padrão, sempre com fonte física fixada dentro do Mixer. No Safari/Meet, inclua hotplug de AirPods; não prometer recuperação automática apenas porque a leitura nativa do driver funciona.
 
 Materiais de vidro não renderizam plenamente fora da tela. QA do painel precisa verificar legibilidade, geometria de acessibilidade, primeira resposta ao clique e a renderização nativa em uma tela real. Uma captura headless não substitui essa etapa.
+
+## Desinstalação e cancelamento
+
+A identificação de bundles usa `com.local.mixerdeaudio` e os identificadores legados documentados, com revalidação antes da remoção. A identificação por nome ou glob não autoriza remover programas de terceiros. O driver continua em 1.5; a correção da 5.12.4 não altera sua topologia ou processamento.
+
+Nos dois fluxos corrigidos, a autorização antecede as alterações destrutivas. O cancelamento conserva os bundles e o estado de usuário. Em **Remover só o app**, toda a limpeza de estado depende da remoção confirmada. No desinstalador externo, o passo autorizado revalida os IDs, libera um worker do usuário para executar os binários originais com `--unregister-login --destroy-legacy-aggregate` e aguarda sua conclusão antes de remover os arquivos como administrador. O worker publica o marcador de conclusão por `mv` atômico, depois de escrever seu resultado completo em um arquivo temporário. LaunchServices, preferências, TCC, atalhos e encerramento só seguem após confirmar a ausência dos bundles. Uma falha posterior à autorização pode deixar login/agregado alterados; o aviso informa esse limite e a limpeza restante é interrompida. Autorização concedida não comprova que o comando removeu todos os destinos.
+
+As regressões devem usar bundles falsos e ferramentas simuladas para cancelar a autorização, provocar falha de remoção e concluir com sucesso. Inclua um conjunto com cópia gravável e outra que precisa de autorização, conferindo que o cancelamento preserva ambas. Não execute a desinstalação real como etapa dos testes automatizados.
+
+## Expiração dos desafios de suporte
+
+O relay confere novamente `Date.now()` depois do consumo do identificador do desafio e depois da checagem de quotas, antes de encaminhar o relatório. A validação inicial não basta: a espera pelo banco pode atravessar a expiração enquanto outra requisição limpa o identificador usado. As duas regressões novas simulam essa concorrência e a expiração durante as quotas com banco em memória e transporte falso. Publicar o app não atualiza o serviço; o endpoint hospedado precisa de uma implantação separada e conferida.
 
 ## Regras de mudança
 

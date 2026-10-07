@@ -1,10 +1,18 @@
 # Histórico do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.3.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.4.md)
 
 Este arquivo preserva integralmente as entradas de versão que estavam no README. Elas descrevem o comportamento e as verificações de cada época; os procedimentos atuais ficam no [manual](../README.md) e no [guia de desenvolvimento](DEVELOPMENT.md).
 
 ---
+
+## Versão 5.12.4 — desinstalação e envio de suporte — 2026-10-06
+
+- **Remover só o app** respeita o cancelamento da autorização e confere os bundles restantes antes de limpar o estado de usuário ou anunciar sucesso. A identificação das cópias que precisam de autorização acontece antes de começar a remoção.
+- O desinstalador externo espera a autorização e revalida as identidades antes de executar os utilitários de login/agregado como usuário e remover os arquivos. LaunchServices, preferências, permissão de microfone, atalhos e encerramento dependem da ausência confirmada dos bundles. Cancelar a senha preserva o estado; uma falha posterior informa que login/agregado podem já ter sido alterados e interrompe a limpeza restante.
+- O marcador de conclusão dos utilitários é publicado por troca atômica, evitando que o passo autorizado leia um arquivo ainda vazio e interrompa a remoção indevidamente.
+- O relay revalida o relógio depois do consumo do identificador do desafio e da checagem de limites, antes de encaminhar o relatório. Desafios que expirem durante essas esperas são recusados, impedindo replay após a limpeza do identificador usado.
+- Metadados de versão, manuais e notas de distribuição atualizados. Captura, buffers, WSOLA, gate, presets, interface e driver 1.5 permanecem no estado da 5.12.3. Os resultados próprios desta correção ficam nas [notas 5.12.4](releases/5.12.4.md).
 
 ## Versão 5.12.3 — limpeza e organização do projeto — 2026-10-06
 
