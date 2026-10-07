@@ -1,6 +1,10 @@
 # Desenvolvimento do Mixer de Áudio
 
-Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.2. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.3.md)
+
+Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.3. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
+
+A 5.12.3 limpa arquivos externos de revisão e scripts históricos de teste, além de organizar a navegação dos manuais no [mapa do projeto](INDEX.md). O código do aplicativo, DSP, visual aprovado e driver 1.5 conservam o estado da 5.12.2. Produtos de compilação, caches e dependências geradas do relay podem ser recompostos; sua limpeza não altera o tamanho do app distribuído. `.build/` também contém chaves, configuração de publicação, backups privados e artefatos de releases, que continuam necessários para manutenção e recuperação.
 
 ## Componentes e caminho do áudio
 
@@ -28,21 +32,24 @@ O BlackHole pertence às versões antigas. Não é dependência do pipeline atua
 
 ## Estrutura
 
-```text
-Sources/MixerDeAudio/   app, UI, captura, grafo, atualização e diagnóstico
-Sources/MixerCore/      regras puras, buffers, formato de configuração e guardas
-Vendor/MixerDsp/        motor C++ compartilhado com Windows
-Vendor/MixerDeAudioDriver-src/ fonte C e Info.plist do driver
-Vendor/MixerDeAudioDriver.driver/ snapshot recompilado 1.5; novos builds compilam o C
-Tests/MixerDspTests/    testes Swift Testing do DSP e MixerCore
-Tests/Driver/          harnesses C do driver e sanitizers
-Tests/Release/         testes offline de manifesto e publicação retomável
-tools/                 compilação do driver, versão, manifesto e distribuição
-VERSION                versão autoritativa; demais metadados são derivados
-Resources/             ícone
-docs/                  manual técnico, compatibilidade, histórico e notas de releases
-.build/                produtos locais ignorados pelo Git
-```
+| Caminho | Finalidade |
+|---|---|
+| `Sources/MixerDeAudio/` | Aplicativo, interface, captura, grafo, atualização e diagnóstico |
+| `Sources/MixerCore/` | Regras puras, buffers, configuração e guardas |
+| `Vendor/MixerDsp/` | Motor C++ compartilhado com Windows |
+| `Vendor/MixerDeAudioDriver-src/` | Fonte C e metadados do driver |
+| `Vendor/MixerDeAudioDriver.driver/` | Snapshot 1.5 para recuperação; builds novos compilam a fonte |
+| `Services/SupportRelay/` | Serviço separado de encaminhamento do relatório de suporte |
+| `Tests/` | Regressões Swift, driver com sanitizers e contratos da distribuição |
+| `tools/` | Build do driver, versão, assinatura, manifestos e publicação |
+| `Resources/` | PNG original e ICNS do aplicativo |
+| `docs/` | Mapa, arquitetura, compatibilidade, histórico e notas de releases |
+| `VERSION`, `Info.plist`, `Version.xcconfig` | Versão autoritativa e metadados sincronizados |
+| `Package.swift`, `project.yml` | Build SwiftPM e projeto opcional XcodeGen |
+| `.github/workflows/testes.yml` | CI de regressões e distribuição universal |
+| `.build/` | Produtos locais, artefatos, ferramentas e dados privados de manutenção |
+
+O [mapa detalhado](INDEX.md#pastas-e-arquivos-principais) identifica os arquivos de cada componente e os comandos correspondentes. As pastas de fonte e os recursos visuais mantêm seus caminhos. Em `.build/`, preserve as chaves e os helpers usados na publicação, os backups privados e as releases anteriores; apenas caches e produtos reconstruíveis pertencem à limpeza de temporários.
 
 `Config.swift` é a fonte do preset macOS. A referência visual é o [UI Kit oficial do macOS 27](https://developer.apple.com/design/resources/) e as [diretrizes de interface do macOS](https://developer.apple.com/design/human-interface-guidelines/designing-for-macos). O app usa SwiftUI/AppKit, símbolos e materiais da plataforma. O painel principal conserva a composição compacta de 320 pt da Central de Controle, com círculos de ação e fundo translúcido. As cinco janelas auxiliares usam formulários, listas e controles padrão, cores semânticas, tipografia e métricas do sistema. O programa permanece na barra de menus e tem mínimo macOS 15.
 
@@ -89,7 +96,7 @@ Ao mudar o C, aumente `CFBundleVersion` em `Vendor/MixerDeAudioDriver-src/Info.p
 
 O build do app e da release chama essa etapa automaticamente. O binário histórico em `Vendor/` não é reutilizado em uma nova distribuição.
 
-O driver do fonte tem versão **1.5** na distribuição 5.12.2, preservada desde a 5.12.0. O dispositivo escritor preserva nome e UID `MixerDeAudio_UID`, com somente saída, e o microfone dedicado preserva nome e UID `MixerDeAudio_Microphone_UID`, com somente entrada. A topologia retira a entrada duplex antiga; o ring e o clock continuam compartilhados entre escritor e consumidores. O app deve resolver o escritor ao enviar áudio e o microfone dedicado ao medir ou ler a transmissão. Nenhum deles pode ser escolhido como fonte física do próprio Mixer. O escritor continua inelegível como saída padrão do sistema.
+O driver do fonte tem versão **1.5** na distribuição 5.12.3, preservada desde a 5.12.0. O dispositivo escritor preserva nome e UID `MixerDeAudio_UID`, com somente saída, e o microfone dedicado preserva nome e UID `MixerDeAudio_Microphone_UID`, com somente entrada. A topologia retira a entrada duplex antiga; o ring e o clock continuam compartilhados entre escritor e consumidores. O app deve resolver o escritor ao enviar áudio e o microfone dedicado ao medir ou ler a transmissão. Nenhum deles pode ser escolhido como fonte física do próprio Mixer. O escritor continua inelegível como saída padrão do sistema.
 
 Seleções salvas por consumidores no UID legado não migram automaticamente: o usuário precisa escolher “Mixer de Áudio — Microfone” no aplicativo consumidor. A preservação do UID dedicado mantém a identidade das seleções que já o utilizavam. A enumeração de um único dispositivo com canais de entrada e uma leitura HAL com sinal são verificações locais; não substituem chamadas reais no Safari, Discord ou OBS.
 
@@ -178,7 +185,7 @@ A release exige árvore limpa. `MIXER_ALLOW_DIRTY_RELEASE=1` permite preparar um
 
 `publicar.sh --dry-run` confere os artefatos e mostra o plano sem autenticação ou escrita remota. A execução real valida a `main` remota e a tag, prepara as duas releases como rascunhos e confere uploads byte a byte. Uma interrupção pode ser retomada com o mesmo comando; assets divergentes não são sobrescritos. As releases só ficam visíveis após ambas conterem os assets completos. O publicador confere downloads públicos e `releases/latest`, que o updater consulta.
 
-Uma mudança de release publicada exige aumentar `VERSION`, sincronizar os metadados e criar notas próprias. A 5.12.2 usa a tag `v5.12.2`; preserve os ZIPs, as assinaturas e as tags das releases anteriores. Após commit e push da mesma fonte validada, prepare os artefatos e publique com `./publicar.sh docs/releases/5.12.2.md`. Atualize o README do repositório público somente com dados conferidos da nova release.
+Uma mudança de release publicada exige aumentar `VERSION`, sincronizar os metadados e criar notas próprias. A 5.12.3 usa a tag `v5.12.3`; preserve os ZIPs, as assinaturas e as tags das releases anteriores. Após commit e push da mesma fonte validada, prepare os artefatos e publique com `./publicar.sh docs/releases/5.12.3.md`. Atualize o README do repositório público somente com dados conferidos da nova release.
 
 A assinatura Ed25519 do ZIP público é independente de assinatura de código/notarização Apple. A chave privada de atualização fica fora do Git, dos pacotes e de backups públicos. Não substituir ou divulgar essa chave. Um novo par exige a transição da chave pública embutida antes de passar a assinar somente com a nova privada.
 

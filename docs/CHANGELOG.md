@@ -1,8 +1,17 @@
 # Histórico do Mixer de Áudio
 
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.3.md)
+
 Este arquivo preserva integralmente as entradas de versão que estavam no README. Elas descrevem o comportamento e as verificações de cada época; os procedimentos atuais ficam no [manual](../README.md) e no [guia de desenvolvimento](DEVELOPMENT.md).
 
 ---
+
+## Versão 5.12.3 — limpeza e organização do projeto — 2026-10-06
+
+- [Mapa do projeto](INDEX.md) reúne componentes, comandos, testes, distribuição, conectores e histórico. README e guia de desenvolvimento passam a oferecer navegação direta e tabelas de consulta. O visual aprovado do app e a disposição dos arquivos de fonte e recursos são preservados.
+- Removidos os dois scripts e o workflow usados somente para testar uma skill de revisão, além de dois scripts históricos de remoção do driver de teste e do BlackHole.
+- Metadados de versão, manuais e notas de distribuição atualizados. Fontes do aplicativo, motor WSOLA, gate, interface e driver 1.5 preservados em relação à 5.12.2.
+- A limpeza dos caches e produtos locais de desenvolvimento libera espaço na máquina e não representa redução do aplicativo distribuído. Escopo, verificações e pendências ficam nas [notas 5.12.3](releases/5.12.3.md).
 
 ## Versão 5.12.2 — menor espera no áudio — 2026-10-06
 

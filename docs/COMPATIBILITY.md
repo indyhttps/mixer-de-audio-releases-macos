@@ -1,5 +1,7 @@
 # Compatibilidade e validação de campo
 
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.3.md)
+
 Esta matriz separa o que foi observado em versões anteriores do que precisa ser repetido no app 5.12.2/driver 1.5. “Implementado” não significa “validado em todas as combinações de hardware, sistema e aplicativo”. A entrada a selecionar na versão atual é **Mixer de Áudio — Microfone**; **Mixer de Áudio** tem somente a saída de alimentação usada pelo motor. A 5.12.1 altera a apresentação da fonte e do estado no painel, preservando a topologia e o processamento da 5.12.0.
 
 A evidência histórica vem de [REVISAO-CETICA.md no repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) e do [histórico de versões](CHANGELOG.md). O registro privado exige acesso; a matriz e as notas atuais acompanham ambos os ZIPs. Registre aqui a versão do app/driver, macOS, consumidor, dispositivo e resultado ao executar um cenário novo.

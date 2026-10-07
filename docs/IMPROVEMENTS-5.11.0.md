@@ -1,5 +1,7 @@
 # Melhorias da versão 5.11.0
 
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.3.md)
+
 Este registro histórico acompanha os 40 itens aprovados para a 5.11.0. O item 16 foi excluído por pedido da usuária. Implementação, execução de testes e validação de campo são estados distintos; a matriz de compatibilidade registra os cenários que ainda precisam de hardware ou aplicativos externos. As correções posteriores de UI e robustez são descritas nas [notas da 5.11.1](releases/5.11.1.md).
 
 | Nº | Melhoria e benefício | Implementação |
