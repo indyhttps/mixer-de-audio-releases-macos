@@ -139,7 +139,7 @@ Nenhum segredo, chave privada, relatório pessoal ou backup privado deve ser cop
 | Sites | Hospedagem separada do relay de suporte, suas migrações e variáveis privadas |
 | Sentry | Metadados das versões e eventos técnicos do app, conforme a preferência de telemetria |
 
-A mesma tag, versão e commit devem corresponder aos manifestos e pacotes. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
+A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacotes. Na 5.12.4, os ZIPs e a tag de fonte conservam o snapshot do commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`. A documentação em `main` e os manuais públicos foram atualizados após publicar para registrar os resultados finais; esse registro não refaz os pacotes. Uma próxima mudança do aplicativo ou dos pacotes exige uma nova versão. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
 
 ## Documentação e histórico
 

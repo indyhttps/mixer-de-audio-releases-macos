@@ -6,7 +6,7 @@
 
 O Mixer captura seu microfone real, altera a voz em tempo real e entrega o resultado para chamadas, gravações e jogos. O aplicativo fica na barra de menus do macOS e usa seu próprio driver virtual; não precisa de BlackHole.
 
-Baixe a versão publicada nas [releases públicas para macOS](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases). O driver já vem dentro do aplicativo. O [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases) também guarda os pacotes completos com código-fonte. Este manual acompanha o código 5.12.4; a página de downloads informa quais versões já foram publicadas.
+A versão **5.12.4** está publicada nas [releases públicas para macOS](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/tag/v5.12.4), com pacotes e downloads conferidos. O driver já vem dentro do aplicativo. O [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases/tag/v5.12.4) também guarda o pacote completo com código-fonte. Este manual acompanha a versão 5.12.4; as [notas da entrega](docs/releases/5.12.4.md) registram os resultados finais de publicação e instalação.
 
 A distribuição usa o **driver 1.5**, recompilado do fonte. Ele oferece uma única entrada virtual: **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** passa a ter apenas a saída que alimenta esse microfone; deixa de aparecer como uma segunda entrada. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.4 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
 

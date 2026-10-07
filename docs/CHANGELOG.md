@@ -13,6 +13,7 @@ Este arquivo preserva integralmente as entradas de versão que estavam no README
 - O marcador de conclusão dos utilitários é publicado por troca atômica, evitando que o passo autorizado leia um arquivo ainda vazio e interrompa a remoção indevidamente.
 - O relay revalida o relógio depois do consumo do identificador do desafio e da checagem de limites, antes de encaminhar o relatório. Desafios que expirem durante essas esperas são recusados, impedindo replay após a limpeza do identificador usado.
 - Metadados de versão, manuais e notas de distribuição atualizados. Captura, buffers, WSOLA, gate, presets, interface e driver 1.5 permanecem no estado da 5.12.3. Os resultados próprios desta correção ficam nas [notas 5.12.4](releases/5.12.4.md).
+- Publicação e instalação concluídas: os dois ZIPs e seus downloads foram conferidos, a assinatura Ed25519 passou e a CI do commit da entrega aprovou os quatro jobs. O relay Sites v3 foi publicado separadamente; a release do Sentry foi sincronizada e o token temporário revogado. A documentação em `main` registra esses resultados após a publicação, preservando os ZIPs e a tag `v5.12.4` do repositório de fonte no commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`.
 
 ## Versão 5.12.3 — limpeza e organização do projeto — 2026-10-06
 
