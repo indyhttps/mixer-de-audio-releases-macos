@@ -1,10 +1,19 @@
 # Histórico do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.6.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.7.md)
 
 Este arquivo preserva integralmente as entradas de versão que estavam no README. Elas descrevem o comportamento e as verificações de cada época; os procedimentos atuais ficam no [manual](../README.md) e no [guia de desenvolvimento](DEVELOPMENT.md).
 
 ---
+
+## Versão 5.12.7 — VU responsivo e preset atual — 2026-10-14
+
+- VU consulta a amostra real mais recente a **60 Hz** enquanto o painel está visível; diagnóstico/calibração ocultos conservam **10 Hz**. Callback direto na thread principal, sem tarefa assíncrona por tick; valores iguais não invalidam a UI. Retirada a interpolação visual de 80 ms da Saída. A interação e a quantização do gate permanecem iguais.
+- O controle superior mostra o nome do preset correspondente, inclusive presets salvos; sem correspondência, mostra **Personalizado**. Controle com textos centralizados e sem ícone, menu nativo de vozes de fábrica/salvas e ações de gerenciamento; **Neutro** continua em um clique. O nome preferido é persistido e só prevalece quando altura e timbre ainda correspondem; renomear, excluir e desfazer mantêm essa preferência coerente.
+- O seletor de fonte ocupa cartão próprio **Microfone**, com 292 × 56 pt, iguais aos cartões Ouvir minha voz e Abrir no login. O módulo de medidores se chama **Níveis**; seleção e preferências foram preservadas.
+- Voz e Microfone retornam ao alinhamento anterior à esquerda; as ações do rodapé recuperam suas legendas. O painel continua compacto, com Entrada e Saída alinhadas e o gate dentro da Entrada. Sonda de altura: **845 pt**; painel instalado e cartão Microfone conferidos.
+- **Validação local:** 121 testes Swift integrados aprovados, incluindo sete regressões novas de presets. Harness isolado de timer/Combine aprovou **17/17 verificações**, com cerca de 59,8 Hz visíveis, 10 Hz ocultos, continuidade em rastreamento de eventos e retomada após pausa de 250 ms sem fila de ticks. Não mede renderização/GPU nem comprova resposta de voz ou aprovação humana.
+- DSP/WSOLA, driver **1.6**, valores de áudio, presets de fábrica, calibração, buffers e Dock opcional preservados. Build universal e pacotes aprovados. A reinstalação limpa usou os instaladores nativos após ausência confirmada de app/driver; árvores instaladas iguais aos dois ZIPs, nove preferências recuperadas do backup anterior, uma cópia e um registro canônicos, Dock completo inalterado durante a reinstalação e zero ícones próprios. App aberto com Microfone Enviando e níveis reais variando; diagnóstico com dois reparos e zero falhas. A [CI 38609884214](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38609884214) foi impedida de executar os quatro jobs por restrição de execução no GitHub Actions. Publicação e downloads têm conferência própria; a 5.12.6 permanece imutável. Detalhes nas [notas 5.12.7](releases/5.12.7.md).
 
 ## Versão 5.12.6 — confiabilidade do áudio e da manutenção — 2026-10-14
 

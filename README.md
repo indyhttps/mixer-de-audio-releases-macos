@@ -1,4 +1,4 @@
-# Mixer de Áudio — manual 5.12.6
+# Mixer de Áudio — manual 5.12.7
 
 [![testes](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml/badge.svg)](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml)
 
@@ -6,11 +6,11 @@
 
 O Mixer captura seu microfone real, altera a voz em tempo real e entrega o resultado para chamadas, gravações e jogos. O aplicativo fica na barra de menus do macOS e usa seu próprio driver virtual; não precisa de BlackHole.
 
-Este é o manual da versão **5.12.6**, com o driver incluído no aplicativo. O painel compacto reúne a entrada do microfone e o gate no mesmo controle. Baixe a distribuição nas [releases públicas](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest) e consulte as [notas da versão](docs/releases/5.12.6.md) para conhecer as correções, as verificações e os limites. O [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases) conserva os pacotes completos.
+Este é o manual da **5.12.7**, com VU mais responsivo, nome do preset atual e seletor de microfone em cartão próprio. O build universal, os pacotes e a reinstalação limpa foram verificados. Baixe a distribuição nas [releases públicas](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest) e consulte as [notas da versão](docs/releases/5.12.7.md) para conhecer os resultados e limites. O pacote com código-fonte fica somente no [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases). Os artefatos e resultados da [5.12.6](docs/releases/5.12.6.md) permanecem preservados.
 
-A versão 5.12.6 usa o **driver 1.6**, recompilado do fonte, que impede a leitura de áudio antigo após uma volta do buffer ou uma sobrescrita concorrente. Ele conserva a única entrada virtual **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** continua oferecendo somente a saída que alimenta esse microfone. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.5 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
+A 5.12.7 conserva o **driver 1.6**, introduzido e publicado na 5.12.6, que impede a leitura de áudio antigo após uma volta do buffer ou uma sobrescrita concorrente. Ele conserva a única entrada virtual **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** continua oferecendo somente a saída que alimenta esse microfone. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.5 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
 
-**A 5.12.6 corrige estados e operações de manutenção.** O microfone só mostra **Enviando** quando a captura e o roteamento estão saudáveis; o diagnóstico consulta o áudio sem bloquear o painel e encerra sua amostragem ao terminar. Todos os caminhos de presets explicam a pausa do monitor da mesma forma. O nível de **Entrada** e o gate compartilham um único slider nativo, com a barra ao vivo e o puxador de ajuste na mesma escala. O seletor de fonte fica no cartão **Microfone**; rótulos curtos, tiles centralizados e ações por ícones deixam o painel mais compacto. A desinstalação completa confirma a remoção antes de limpar o estado, e a publicação retomada confere também as notas dos rascunhos.
+**A 5.12.7 atualiza a apresentação do painel.** O VU consulta a leitura real mais recente a 60 Hz quando visível; diagnóstico e calibração ocultos conservam 10 Hz. O controle superior mostra o preset correspondente ou **Personalizado**, com menu de vozes e acesso direto a **Neutro**. Voz e Microfone retomam o alinhamento à esquerda, e as ações do rodapé voltam a mostrar legendas. O cartão **Microfone** seleciona a fonte; **Níveis** reúne Entrada, gate e Saída. Entrada e gate continuam no mesmo slider nativo. Essas mudanças não alteram o processamento, os ajustes de voz ou a calibração. O painel instalado foi conferido, com microfone Enviando e níveis reais de Entrada e Saída variando. Isso não substitui aprovação auditiva ou teste de chamada.
 
 **A 5.12.5 respeita sua escolha de usar o Dock.** Abrir, reabrir, instalar ou atualizar o Mixer não fixa o aplicativo automaticamente. Ele continua acessível pela barra de menus, inclusive quando você o deixa fora do Dock. Um atalho já fixado é conservado e aponta para o aplicativo em Aplicativos; duplicatas próprias são reunidas nesse atalho. Você pode adicioná-lo ou removê-lo quando quiser, seguindo [Usar o Dock](#usar-o-dock). O visual, os ajustes de voz, os buffers e o driver 1.5 são preservados.
 
@@ -66,10 +66,10 @@ No FaceTime, abra o menu **Vídeo** na barra de menus e escolha o microfone dedi
 ## Usar o painel
 
 - Clique no ícone da barra de menus para abrir o painel; o botão direito abre o menu completo.
-- **Voz feminina / Neutro** aplicam a voz calibrada ou retornam os controles para zero. **Altura** e **Timbre** permitem ajustes finos. No motor WSOLA atual, os dois ajustes contribuem para a transposição combinada.
+- O controle superior mostra o **nome do preset atual**. Abra seu menu para escolher uma voz de fábrica ou salva, salvar a voz atual ou gerenciar presets. Sem correspondência com os valores de altura e timbre, ele mostra **Personalizado**. **Neutro** retorna os dois controles para zero em um clique. **Altura** e **Timbre** permitem ajustes finos; no WSOLA atual, ambos contribuem para a transposição combinada.
 - **Microfone: Mudo** interrompe o envio; **Enviando** depende da captura e do roteamento saudáveis. O tile também informa **Desligado**, **Sem microfone**, **Conectando** ou **Interrompido**, e a barra de menus usa o mesmo estado. **Voz: Desligada** desliga o processamento; **Ligada** solicita sua ativação.
 - **Entrada** mostra o sinal cru; **Saída** mostra o sinal entregue pelo Mixer aos aplicativos. A recepção na chamada também depende da entrada selecionada no aplicativo.
-- Os ícones circulares **Fechar** e **Sair** escondem o painel mantendo o áudio ou encerram o aplicativo, respectivamente. **Reconectar**, **Diagnóstico** e **Desinstalar** também ficam na linha de ações. A ajuda ao passar o ponteiro e os nomes de acessibilidade identificam cada ação. O painel principal é compacto e rolável, com cabeçalho próprio para arrastar; as janelas auxiliares permitem redimensionar.
+- Os botões circulares com legenda **Fechar** e **Sair** escondem o painel mantendo o áudio ou encerram o aplicativo, respectivamente. **Reconectar**, **Diagnóstico** e **Desinstalar** também ficam na linha de ações. A ajuda ao passar o ponteiro e os nomes de acessibilidade identificam cada ação. O painel principal é compacto e rolável, com cabeçalho próprio para arrastar; as janelas auxiliares permitem redimensionar.
 - A cápsula no rodapé mostra estados curtos, como **Ativo**, **Microfone mudo** ou **Desligado**. Um aviso recente aparece como **Novo aviso**. Clique para abrir os detalhes do áudio e o aviso completo, apresentados com texto centralizado. **Todos os avisos…** abre **Estado e avisos**, uma janela compacta com estado atual e histórico centralizados; ela permite rolagem e redimensionamento. As mensagens usam inicial maiúscula, como **Ativo**, também nos detalhes. As opções do painel dão acesso a **Preferências**, **Presets de voz** e **Guia de uso**.
 
 ## Gate, canal e monitor
@@ -84,7 +84,7 @@ Em **Preferências → Entrada e monitor**, uma interface com várias entradas p
 
 ## Presets, backup e atraso
 
-Em **Presets de voz**, salve a voz atual, renomeie, duplique ou atualize um preset. Substituição e exclusão pedem confirmação; **Desfazer última alteração** recupera a lista anterior na mesma sessão. O estado selecionado corresponde aos valores reais de altura e timbre.
+Em **Presets de voz**, salve a voz atual, renomeie, duplique ou atualize um preset. Substituição e exclusão pedem confirmação; **Desfazer última alteração** recupera a lista anterior na mesma sessão. O nome no controle superior corresponde aos valores reais de altura e timbre, inclusive para presets salvos. O nome aplicado é lembrado quando há presets equivalentes; ajustar manualmente os valores pode mostrar outro preset correspondente ou **Personalizado**. Renomear, excluir e desfazer atualizam essa preferência junto da lista.
 
 **Exportar configuração** cria um JSON versionado com voz, presets, calibrações e preferências de dispositivos, atualização e telemetria. **Importar configuração** valida o arquivo e mostra um resumo antes de substituir as preferências. Não inclui gravações, credenciais, permissão de microfone ou autorização de início no login. Depois de reinstalar o macOS, essas autorizações precisam ser concedidas novamente.
 
@@ -93,7 +93,7 @@ Em **Presets de voz**, salve a voz atual, renomeie, duplique ou atualize um pres
 ## Quando falta som
 
 1. Confira se o aplicativo da chamada usa **Mixer de Áudio — Microfone**, principalmente após atualizar de uma versão com duas entradas.
-2. Confira **Voz: Ligado**, **Microfone: Enviando**, o microfone **Em uso** e o medidor **Saída**.
+2. Confira **Voz: Ligada**, **Microfone: Enviando**, a fonte exibida no seletor do cartão **Microfone** e o medidor **Saída**.
 3. Use **Reconectar** depois de uma transição de dispositivo.
 4. Abra **Diagnóstico** para gerar e ler um relatório local. Driver e roteamento podem ser reparados durante a verificação.
 5. Se precisar de suporte, confira a prévia e use **Enviar este relatório ao suporte**. O envio ao canal privado do Discord é uma ação separada; o relatório não inclui gravação de voz.
@@ -116,7 +116,8 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 | A arquitetura, os testes e a distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
 | Os cenários conferidos e as pendências de campo | [Compatibilidade](docs/COMPATIBILITY.md) |
 | O histórico completo de versões | [Changelog](docs/CHANGELOG.md) |
-| A entrega atual | [Notas 5.12.6 — confiabilidade do áudio e da manutenção](docs/releases/5.12.6.md) |
+| A entrega atual | [Notas 5.12.7 — VU responsivo e preset atual](docs/releases/5.12.7.md) |
+| A entrega anterior | [Notas 5.12.6 — confiabilidade do áudio e da manutenção](docs/releases/5.12.6.md) |
 | As melhorias da 5.11.0 | [Registro das melhorias](docs/IMPROVEMENTS-5.11.0.md) |
 | As regras e os resultados de revisão | [AGENTS — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
 
@@ -124,6 +125,7 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 
 | Versão | Assunto |
 |---|---|
+| [5.12.6](docs/releases/5.12.6.md) | Confiabilidade do driver, interface e manutenção |
 | [5.12.5](docs/releases/5.12.5.md) | Dock opcional |
 | [5.12.4](docs/releases/5.12.4.md) | Desinstalação e envio de suporte |
 | [5.12.3](docs/releases/5.12.3.md) | Limpeza e organização do projeto |

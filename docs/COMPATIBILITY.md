@@ -1,10 +1,23 @@
 # Compatibilidade e validação de campo
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.6.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.7.md)
 
-Esta matriz separa os resultados históricos dos cenários que precisam de evidência própria no app **5.12.6/driver 1.6**. A entrada continua sendo **Mixer de Áudio — Microfone**; **Mixer de Áudio** oferece somente a saída de alimentação. A manutenção corrige publicação e validade temporal de frames no driver, estado da UI e fluxos de diagnóstico/desinstalação, preservando DSP, gate, ajustes e Dock opcional. Os testes locais, o build universal e a instalação do desenho final passaram. A captura do painel, o ajuste do gate, a publicação dos pacotes e a CI aprovada estão registrados abaixo. Resultados humanos anteriores continuam associados à versão em que foram obtidos.
+Esta matriz separa a **5.12.7/driver 1.6** dos resultados da **5.12.6** e de versões anteriores. Os **121 testes Swift**, o build universal e os pacotes passaram; a sonda mediu **845 pt**, e a reinstalação limpa foi concluída e conferida. A apresentação instalada inclui Microfone em cartão próprio, Níveis separado, nome do preset e legendas do rodapé. A entrada continua sendo **Mixer de Áudio — Microfone**; DSP, driver, gate, buffers e Dock opcional são preservados. Resultados anteriores não constituem novos testes desta versão.
 
 A evidência histórica vem de [REVISAO-CETICA.md no repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) e do [histórico de versões](CHANGELOG.md). O registro privado exige acesso; a matriz e as notas atuais acompanham ambos os ZIPs. Registre aqui a versão do app/driver, macOS, consumidor, dispositivo e resultado ao executar um cenário novo.
+
+## Validação 5.12.7 — 2026-10-14
+
+A suíte passou com **121 testes Swift**, e o build universal foi aprovado. A sonda mediu **845 pt** de conteúdo. App e driver instalados coincidem com os dois ZIPs locais do fonte `5b631f66ffb987505b07b0d8150f676ed4037521`; assinatura e arquiteturas passaram. App e driver estavam ausentes antes da execução dos instaladores nativos. Nove preferências foram recuperadas do backup anterior já validado; início no login está ligado e monitor desligado. Há uma cópia canônica, um registro no LaunchServices e zero atalhos próprios no Dock. A comparação com o registro histórico passou 9/10: a diferença no Dock já existia antes da reinstalação. A comparação específica confirmou seu estado completo idêntico antes/depois. Captura nativa confirmou app aberto, Microfone Enviando e níveis reais de Entrada/Saída variando; diagnóstico com dois reparos (driver e roteamento) e zero falhas. A regra de demanda seleciona 60 Hz com painel visível, 10 Hz para diagnóstico/calibração ocultos e encerra o timer ao terminar o último uso. As regressões do preset não substituem a conferência humana de cada cenário abaixo.
+
+A [CI 38609884214](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38609884214), do mesmo fonte, terminou com quatro jobs sem runner ou passos executados. As anotações do GitHub registram uma restrição da conta que impediu a execução. Nenhum teste remoto foi aprovado ou reprovado por execução; os resultados locais permanecem separados.
+
+| Cenário da 5.12.7 | Resultado e conferência ainda necessária |
+|---|---|
+| VU visível e oculto | Níveis reais de Entrada/Saída variando observados no painel instalado. Interação prolongada, retomada e consumidores ocultos exigem conferência de campo; o harness isolado registra a cadência |
+| Preset atual | Aplicar nome salvo e nome longo, ajustar até Personalizado, renomear/excluir/desfazer e reabrir; conferir nome exibido e valores preservados |
+| Painel e ações | Painel instalado e cartão Microfone conferidos; sonda de 845 pt e prévia de três cartões de 292 × 56 pt aprovadas. VoiceOver real e demais cenários de acessibilidade exigem verificação própria |
+| Distribuição 5.12.7 | Build universal, pacotes, assinatura e reinstalação limpa conferidos. Publicação/downloads recebem leitura própria; CI remota impedida por restrição do GitHub Actions, sem reutilizar o resultado da 5.12.6 |
 
 ## Validação 5.12.6 — 2026-10-14
 
@@ -30,7 +43,7 @@ Os dois pacotes foram publicados, com downloads e `releases/latest` conferidos. 
 
 Não há nova chamada, gravação ou aprovação auditiva atribuída à 5.12.6. O estado final da entrega está registrado nas [notas próprias](releases/5.12.6.md).
 
-## Matriz
+## Matriz de referência da 5.12.6
 
 | Cenário | Comportamento observado / evidência anterior | Roteiro da 5.12.6/driver 1.6 e pendências |
 |---|---|---|
