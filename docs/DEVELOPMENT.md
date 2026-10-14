@@ -1,10 +1,12 @@
 # Desenvolvimento do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.4.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.5.md)
 
-Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.4. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
+Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.5. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
 
-A 5.12.4 corrige dois caminhos de cancelamento da desinstalação: a opção **Remover só o app** respeita o resultado da autorização e confere os bundles restantes; o desinstalador externo espera a autorização e revalida as identidades antes dos utilitários de login/agregado e da remoção, confirmando a ausência dos bundles antes da limpeza restante. O relay também revalida a expiração dos desafios depois das esperas no banco, antes de encaminhar relatórios. O DSP, os buffers, o visual aprovado e o driver 1.5 conservam o estado da 5.12.3. A organização dos manuais no [mapa do projeto](INDEX.md) permanece. Produtos de compilação, caches e dependências geradas do relay podem ser recompostos; sua limpeza não altera o tamanho do app distribuído. `.build/` também contém chaves, configuração de publicação, backups privados e artefatos de releases, que continuam necessários para manutenção e recuperação.
+A 5.12.5 conserva o aplicativo como agente na barra de menus e retira a fixação automática no Dock. Abrir, reabrir, iniciar no login, instalar ou atualizar não pode criar um atalho persistente. Um atalho próprio já existente é conservado na mesma posição, apontando para o caminho canônico; duplicatas são reunidas nele. A ausência de atalho também é um estado válido e deve permanecer após reabrir. O DSP, os buffers, as preferências, o visual aprovado e o driver 1.5 conservam o comportamento da 5.12.4.
+
+A 5.12.4 corrigiu dois caminhos de cancelamento da desinstalação: a opção **Remover só o app** respeita o resultado da autorização e confere os bundles restantes; o desinstalador externo espera a autorização e revalida as identidades antes dos utilitários de login/agregado e da remoção, confirmando a ausência dos bundles antes da limpeza restante. O relay também revalida a expiração dos desafios depois das esperas no banco, antes de encaminhar relatórios. O DSP, os buffers, o visual aprovado e o driver 1.5 conservam o estado da 5.12.3. A organização dos manuais no [mapa do projeto](INDEX.md) permanece. Produtos de compilação, caches e dependências geradas do relay podem ser recompostos; sua limpeza não altera o tamanho do app distribuído. `.build/` também contém chaves, configuração de publicação, backups privados e artefatos de releases, que continuam necessários para manutenção e recuperação.
 
 ## Componentes e caminho do áudio
 
@@ -22,7 +24,7 @@ Microfone físico
 Sinal processado → monRing → saída física escolhida (monitor opcional)
 ```
 
-- **Aplicativo:** Swift/AppKit/SwiftUI, agente na barra de menus, sem Dock. Captura, DSP, roteamento, UI e preferências ficam no app.
+- **Aplicativo:** Swift/AppKit/SwiftUI, agente na barra de menus, sem ícone obrigatório no Dock. Um atalho persistente é opcional e depende da escolha da usuária. Captura, DSP, roteamento, UI e preferências ficam no app.
 - **Motor:** `Vendor/MixerDsp/` contém WSOLA em C++. A ponte C evita reimplementar o algoritmo em Swift. Altura e timbre contribuem para uma transposição combinada; o timbre atual não é o controle independente de formantes do vocoder antigo.
 - **Driver próprio:** `MixerDeAudioDriver.driver`, hospedado no `coreaudiod`, recebe a escrita do app na saída “Mixer de Áudio” e disponibiliza o áudio na única entrada “Mixer de Áudio — Microfone”. O escritor não tem canais, streams nem controles de entrada; o microfone não oferece uma saída associada. O driver é estéreo a 48 kHz; o processamento de voz do app trabalha em mono.
 - **Monitor:** segue um caminho separado até fones/alto-falantes. Mudar sua saída ou pausá-lo não muda a entrada virtual transmitida.
@@ -96,7 +98,7 @@ Ao mudar o C, aumente `CFBundleVersion` em `Vendor/MixerDeAudioDriver-src/Info.p
 
 O build do app e da release chama essa etapa automaticamente. O binário histórico em `Vendor/` não é reutilizado em uma nova distribuição.
 
-O driver do fonte tem versão **1.5** na distribuição 5.12.3, preservada desde a 5.12.0. O dispositivo escritor preserva nome e UID `MixerDeAudio_UID`, com somente saída, e o microfone dedicado preserva nome e UID `MixerDeAudio_Microphone_UID`, com somente entrada. A topologia retira a entrada duplex antiga; o ring e o clock continuam compartilhados entre escritor e consumidores. O app deve resolver o escritor ao enviar áudio e o microfone dedicado ao medir ou ler a transmissão. Nenhum deles pode ser escolhido como fonte física do próprio Mixer. O escritor continua inelegível como saída padrão do sistema.
+O driver do fonte tem versão **1.5** na distribuição 5.12.5, preservada desde a 5.12.0. O dispositivo escritor preserva nome e UID `MixerDeAudio_UID`, com somente saída, e o microfone dedicado preserva nome e UID `MixerDeAudio_Microphone_UID`, com somente entrada. A topologia retira a entrada duplex antiga; o ring e o clock continuam compartilhados entre escritor e consumidores. O app deve resolver o escritor ao enviar áudio e o microfone dedicado ao medir ou ler a transmissão. Nenhum deles pode ser escolhido como fonte física do próprio Mixer. O escritor continua inelegível como saída padrão do sistema.
 
 Seleções salvas por consumidores no UID legado não migram automaticamente: o usuário precisa escolher “Mixer de Áudio — Microfone” no aplicativo consumidor. A preservação do UID dedicado mantém a identidade das seleções que já o utilizavam. A enumeração de um único dispositivo com canais de entrada e uma leitura HAL com sinal são verificações locais; não substituem chamadas reais no Safari, Discord ou OBS.
 
@@ -185,7 +187,7 @@ A release exige árvore limpa. `MIXER_ALLOW_DIRTY_RELEASE=1` permite preparar um
 
 `publicar.sh --dry-run` confere os artefatos e mostra o plano sem autenticação ou escrita remota. A execução real valida a `main` remota e a tag, prepara as duas releases como rascunhos e confere uploads byte a byte. Uma interrupção pode ser retomada com o mesmo comando; assets divergentes não são sobrescritos. As releases só ficam visíveis após ambas conterem os assets completos. O publicador confere downloads públicos e `releases/latest`, que o updater consulta.
 
-Uma mudança no aplicativo ou nos pacotes de uma release publicada exige aumentar `VERSION`, sincronizar os metadados e criar notas próprias. A entrega 5.12.4 usa a tag `v5.12.4` no repositório privado, vinculada ao commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`; seus ZIPs, assinaturas, manifestos e tag permanecem imutáveis. O comando da entrega atual foi `./publicar.sh docs/releases/5.12.4.md`. Para uma próxima versão, faça commit e push da mesma fonte validada, prepare os artefatos e publique com as novas notas correspondentes. Preserve as releases anteriores.
+Uma mudança no aplicativo ou nos pacotes de uma release publicada exige aumentar `VERSION`, sincronizar os metadados e criar notas próprias. A entrega 5.12.4 usa a tag `v5.12.4` no repositório privado, vinculada ao commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`; seus ZIPs, assinaturas, manifestos e tag permanecem imutáveis. O comando daquela entrega foi `./publicar.sh docs/releases/5.12.4.md`. Para a 5.12.5, faça commit e push da mesma fonte validada, prepare os artefatos e publique com `./publicar.sh docs/releases/5.12.5.md`. Preserve as releases anteriores.
 
 Após publicar e conferir os downloads, a documentação em `main` e os manuais públicos podem receber os resultados finais sem refazer os ZIPs ou mover a tag publicada. Esse commit de documentação é distinto do commit registrado nos manifestos e não representa uma nova compilação, instalação ou validação humana. Atualize o README público somente com dados conferidos; uma mudança no conteúdo dos pacotes exige uma nova versão. No repositório público, a tag `v5.12.4` conserva a documentação publicada originalmente; os manuais finais ficam em `main`.
 
@@ -208,6 +210,14 @@ O instalador prepara e valida um bundle completo antes da troca. A publicação 
 Os dois desinstaladores reconhecem aplicativos pelos ids do projeto e revalidam a identidade antes de uma remoção elevada. O driver só é removido quando seu `CFBundleIdentifier` é `com.local.mixerdeaudio.driver`; somente essa remoção provoca a recarga do CoreAudio. Encerramento de processos usa a identidade registrada no AppKit, não o nome `VoiceMod`. Itens de login e atalhos seguem os caminhos de bundles confirmados. BlackHole e seu recibo, Voicemod comercial e outros plugins/programas de terceiros são preservados.
 
 As fixtures de desinstalação exercitam o shell gerado somente contra bundles falsos em uma pasta temporária, substituindo a operação de CoreAudio por um marcador. Elas não executam o desinstalador real, não solicitam senha e não alteram aplicativos, permissões, preferências ou serviços do Mac.
+
+## Dock opcional e registro da instalação
+
+`Info.plist` declara `LSUIElement`; `AppDelegate` mantém a política `.accessory`, inclusive na ativação e reabertura. Um item fixado no Dock é um atalho persistente escolhido pela usuária, independente dessa política. O app continua abrindo seu painel pela barra de menus e pelo caminho canônico.
+
+`InstalledApplicationRegistration` normaliza somente os registros e atalhos comprovadamente pertencentes ao Mixer. Em `persistent-apps`, a normalização não acrescenta um item se nenhum existir. Quando já há itens próprios, conserva a posição do primeiro, reúne duplicatas e corrige o destino para `/Applications/Mixer de Áudio.app`. Em `recent-apps`, retira somente os itens próprios. Outros aplicativos, o modo de ocultação do Dock e as demais preferências do sistema são preservados. Não inferir propriedade apenas pelo nome.
+
+As regressões devem conferir lista vazia, ausência de item próprio entre outros aplicativos, atalho canônico existente, caminho antigo comprovado, duplicatas e repetição da normalização. A lista sem Mixer permanece sem ele; uma segunda execução conserva o mesmo resultado. Na instalação real, remover o atalho pela UI e reabrir precisa manter o Mixer fora do Dock; depois de uma fixação manual, reabrir e atualizar precisam conservar um único atalho canônico na posição escolhida. Build e testes de normalização não substituem essa conferência nativa.
 
 ## Validação de campo
 

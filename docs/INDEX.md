@@ -1,8 +1,8 @@
 # Mapa do projeto
 
-**Versão de manutenção:** 5.12.4 · **Driver:** 1.5 · **Mínimo:** macOS 15
+**Versão de manutenção:** 5.12.5 · **Driver:** 1.5 · **Mínimo:** macOS 15
 
-Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.4 corrige o cancelamento da desinstalação e a expiração de desafios no envio de suporte, preservando o visual aprovado pela usuária, os controles e o processamento de voz.
+Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.5 torna o Dock opcional: a instalação e a abertura não fixam o aplicativo automaticamente, e um atalho escolhido pela usuária é preservado. O visual aprovado, os controles e o processamento de voz continuam preservados. Os testes, o build universal e a instalação limpa estão conferidos; as notas atuais identificam os resultados nativos do Dock e as etapas restantes de distribuição.
 
 ## Por onde começar
 
@@ -10,12 +10,13 @@ Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mi
 |---|---|
 | Instalar ou usar o aplicativo | [Manual de uso](../README.md) |
 | Configurar microfone e chamada | [Configurar a chamada](../README.md#configurar-a-chamada) |
+| Fixar ou retirar o aplicativo do Dock | [Usar o Dock](../README.md#usar-o-dock) |
 | Ajustar gate, canal e monitor | [Gate, canal e monitor](../README.md#gate-canal-e-monitor) |
 | Guardar presets e configuração | [Presets, backup e atraso](../README.md#presets-backup-e-atraso) |
 | Resolver falta de som | [Roteiro de diagnóstico](../README.md#quando-falta-som) |
 | Entender o código e compilar | [Guia de desenvolvimento](DEVELOPMENT.md) |
 | Conferir cenários testados e pendentes | [Compatibilidade](COMPATIBILITY.md) |
-| Ver o escopo da entrega atual | [Notas 5.12.4](releases/5.12.4.md) |
+| Ver o escopo da entrega atual | [Notas 5.12.5](releases/5.12.5.md) |
 | Consultar decisões e versões anteriores | [Histórico](CHANGELOG.md) |
 
 ## Pastas e arquivos principais
@@ -96,8 +97,8 @@ Execute os comandos a partir da raiz do código-fonte. O [guia de desenvolviment
 | Rodar testes de manifesto, instalação e publicação | `python3 -m unittest discover -s Tests/Release -p 'test_*.py'` |
 | Compilar app e driver universais | `./build.sh` |
 | Preparar e validar os dois ZIPs | `./release.sh` |
-| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.4.md --dry-run` |
-| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.4.md` |
+| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.5.md --dry-run` |
+| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.5.md` |
 | Remover a própria instalação | `Desinstalar Mixer de Áudio.command` ou a opção Desinstalar no app |
 
 | Ferramentas em `tools/` | Responsabilidade |
@@ -134,12 +135,12 @@ Nenhum segredo, chave privada, relatório pessoal ou backup privado deve ser cop
 
 | Destino | O que fica nele |
 |---|---|
-| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.4.zip` |
+| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.5.zip` |
 | [GitHub público](https://github.com/indyhttps/mixer-de-audio-releases-macos) | README de downloads, manuais e releases de `mixer-de-audio-macos.zip` com assinatura `.sig` |
 | Sites | Hospedagem separada do relay de suporte, suas migrações e variáveis privadas |
 | Sentry | Metadados das versões e eventos técnicos do app, conforme a preferência de telemetria |
 
-A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacotes. Na 5.12.4, os ZIPs e a tag de fonte conservam o snapshot do commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`. A documentação em `main` e os manuais públicos foram atualizados após publicar para registrar os resultados finais; esse registro não refaz os pacotes. Uma próxima mudança do aplicativo ou dos pacotes exige uma nova versão. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
+A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacotes. A 5.12.5 usa notas e artefatos próprios. Os testes, o build universal e a instalação limpa já estão registrados; os pacotes estão sendo preparados, e publicação e downloads ainda precisam de conferência. Na 5.12.4, os ZIPs e a tag de fonte conservam o snapshot do commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`. A documentação em `main` e os manuais públicos foram atualizados após publicar para registrar os resultados finais daquela versão; esse registro não refaz os pacotes. Uma mudança do aplicativo ou dos pacotes publicados exige uma nova versão. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
 
 ## Documentação e histórico
 
@@ -155,6 +156,7 @@ A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacot
 
 | Release | Assunto |
 |---|---|
+| [5.12.5](releases/5.12.5.md) | Dock opcional e instalação sem fixação automática |
 | [5.12.4](releases/5.12.4.md) | Desinstalação e expiração de desafios no suporte |
 | [5.12.3](releases/5.12.3.md) | Limpeza e organização do projeto |
 | [5.12.2](releases/5.12.2.md) | Menor espera nos buffers e verificações de áudio |
@@ -165,4 +167,4 @@ A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacot
 | [5.11.0](releases/5.11.0.md) | Melhorias de configuração, diagnóstico e confiabilidade |
 | [5.10.4](releases/5.10.4.md) | Distribuição e verificações da versão anterior |
 
-Notas antigas preservam o contexto da versão em que foram escritas. As verificações da entrega atual ficam nas notas 5.12.4; confirmações humanas anteriores não são apresentadas como novos testes desta versão.
+Notas antigas preservam o contexto da versão em que foram escritas. As verificações da entrega atual ficam nas notas 5.12.5; confirmações humanas anteriores não são apresentadas como novos testes desta versão.

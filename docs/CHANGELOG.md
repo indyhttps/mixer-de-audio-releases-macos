@@ -1,10 +1,17 @@
 # Histórico do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.4.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.5.md)
 
 Este arquivo preserva integralmente as entradas de versão que estavam no README. Elas descrevem o comportamento e as verificações de cada época; os procedimentos atuais ficam no [manual](../README.md) e no [guia de desenvolvimento](DEVELOPMENT.md).
 
 ---
+
+## Versão 5.12.5 — Dock opcional — 2026-10-14
+
+- Abrir, reabrir, iniciar no login, instalar ou atualizar o Mixer deixa de fixar automaticamente o aplicativo no Dock. O programa continua como agente na barra de menus e conserva a escolha de ficar fora do Dock.
+- Um atalho próprio já fixado é preservado na posição original e corrigido para `/Applications/Mixer de Áudio.app`; duplicatas são reunidas sem alterar itens de terceiros. Itens próprios recentes são retirados sem criar um atalho persistente.
+- O manual explica a fixação pelo Finder e a retirada em **Opções → Manter no Dock** ou arrastando o ícone para fora. Remover o atalho não encerra o aplicativo e a reabertura não o recria.
+- Metadados, manuais e notas atuais passam à 5.12.5. Voz, presets, gate, buffers, visual e driver 1.5 permanecem preservados. Na validação local, passaram 106 testes Swift, 47 testes Python, harnesses do driver com ASan/UBSan/TSan e autoteste do benchmark. O build universal e a instalação limpa foram conferidos: executável instalado igual ao candidato, nove preferências preservadas (+23/+43), driver 1.5 inalterado, um registro canônico no LaunchServices e zero atalhos persistentes/recentes na primeira abertura. Quatro aberturas reais conservaram a instância única e a política accessory; os itens próprios no Dock foram 0 → 0 → 1 → 0, com zero recentes em todas as aberturas. O atalho temporário preparado por helper nativo para simular a fixação foi preservado após reiniciar; depois de retirado, outra abertura conservou a ausência. O painel instalado foi conferido ativo por acessibilidade e captura nativa. Pacotes e publicação seguem em preparação. Os resultados próprios ficam nas [notas 5.12.5](releases/5.12.5.md).
 
 ## Versão 5.12.4 — desinstalação e envio de suporte — 2026-10-06
 

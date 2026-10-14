@@ -1,4 +1,4 @@
-# Mixer de Áudio — manual 5.12.4
+# Mixer de Áudio — manual 5.12.5
 
 [![testes](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml/badge.svg)](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml)
 
@@ -6,11 +6,13 @@
 
 O Mixer captura seu microfone real, altera a voz em tempo real e entrega o resultado para chamadas, gravações e jogos. O aplicativo fica na barra de menus do macOS e usa seu próprio driver virtual; não precisa de BlackHole.
 
-A versão **5.12.4** está publicada nas [releases públicas para macOS](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/tag/v5.12.4), com pacotes e downloads conferidos. O driver já vem dentro do aplicativo. O [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases/tag/v5.12.4) também guarda o pacote completo com código-fonte. Este manual acompanha a versão 5.12.4; as [notas da entrega](docs/releases/5.12.4.md) registram os resultados finais de publicação e instalação.
+Este manual acompanha a versão **5.12.5**, que torna o Dock opcional. O driver já vem dentro do aplicativo. As [notas da entrega](docs/releases/5.12.5.md) registram o escopo e o estado da validação, instalação e distribuição. Os testes e o build universal passaram, e a instalação limpa foi conferida em `/Applications/Mixer de Áudio.app`, com ajustes preservados e sem atalho automático no Dock. Os pacotes estão sendo preparados; publicação e downloads ainda precisam de conferência. Os downloads oficiais ficam nas [releases públicas para macOS](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases); o [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases) guarda os pacotes completos com código-fonte.
 
 A distribuição usa o **driver 1.5**, recompilado do fonte. Ele oferece uma única entrada virtual: **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** passa a ter apenas a saída que alimenta esse microfone; deixa de aparecer como uma segunda entrada. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.4 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
 
-**A 5.12.4 corrige a desinstalação e o envio de suporte.** Cancelar a autorização preserva os aplicativos e o estado de usuário. A opção **Remover só o app** confere a remoção antes de limpar os dados e anunciar sucesso; o desinstalador externo espera a autorização antes de alterar login ou agregado legado e confirma a remoção antes da limpeza restante. O serviço de suporte passa a recusar um desafio que expire durante suas verificações, evitando o reenvio de um relatório já aceito. O visual aprovado, o processamento de voz e o driver 1.5 continuam preservados. As [notas 5.12.4](docs/releases/5.12.4.md) registram o escopo e a validação desta entrega.
+**A 5.12.5 respeita sua escolha de usar o Dock.** Abrir, reabrir, instalar ou atualizar o Mixer não fixa o aplicativo automaticamente. Ele continua acessível pela barra de menus, inclusive quando você o deixa fora do Dock. Um atalho já fixado é conservado e aponta para o aplicativo em Aplicativos; duplicatas próprias são reunidas nesse atalho. Você pode adicioná-lo ou removê-lo quando quiser, seguindo [Usar o Dock](#usar-o-dock). O visual, os ajustes de voz, os buffers e o driver 1.5 são preservados.
+
+**A 5.12.4 corrigiu a desinstalação e o envio de suporte.** Cancelar a autorização preserva os aplicativos e o estado de usuário. A opção **Remover só o app** confere a remoção antes de limpar os dados e anunciar sucesso; o desinstalador externo espera a autorização antes de alterar login ou agregado legado e confirma a remoção antes da limpeza restante. O serviço de suporte passa a recusar um desafio que expire durante suas verificações, evitando o reenvio de um relatório já aceito. O visual aprovado, o processamento de voz e o driver 1.5 continuam preservados. As [notas 5.12.4](docs/releases/5.12.4.md) registram o escopo e a validação desta entrega.
 
 **A 5.12.2 reduz a espera nas filas de áudio.** O app solicita ciclos menores na taxa nativa do microfone e na saída virtual, dimensiona a reserva pelos ciclos concedidos e amplia essa reserva se faltar áudio. Se captura ou processamento perderem prazos repetidamente, os ciclos aumentam automaticamente. O motor WSOLA, o gate, o formato de áudio e os presets calibrados são preservados. O ganho depende do microfone e da carga do Mac; use **Preferências → Saúde e atraso → Medir atraso por 8 segundos** para comparar o caminho real até o microfone virtual. As [notas 5.12.2](docs/releases/5.12.2.md) registram a validação e seus limites.
 
@@ -27,13 +29,21 @@ Requisitos: macOS 15 ou mais novo. A distribuição é preparada para Apple Sili
 3. Confirme a instalação do dispositivo virtual. O macOS pede sua senha de administrador.
 4. Autorize o acesso ao microfone quando o macOS pedir.
 
-Desde a 5.11.2, abrir um instalador extraído instala ou atualiza o aplicativo em **Aplicativos** e remove o instalador temporário após validar o destino. Use o aplicativo em Aplicativos ou seu atalho no Dock para abrir o Mixer. Uma atualização cancelada ou falha mantém o instalador para nova tentativa.
+Desde a 5.11.2, abrir um instalador extraído instala ou atualiza o aplicativo em **Aplicativos** e remove o instalador temporário após validar o destino. Use o aplicativo em Aplicativos, o item na barra de menus ou um atalho que você tenha escolhido fixar no Dock para abrir o Mixer. Uma atualização cancelada ou falha mantém o instalador para nova tentativa.
 
 **Ao atualizar para a 5.12.0:** encerre os aplicativos que usam áudio, instale o novo driver e reabra-os. Se uma chamada ou gravação tinha **Mixer de Áudio** salvo como entrada, selecione **Mixer de Áudio — Microfone** nas configurações desse aplicativo. A antiga entrada deixa de existir e o Mixer não altera as preferências de outros programas. Quem já selecionava **Mixer de Áudio — Microfone** conserva a identidade desse dispositivo, embora um aplicativo possa exigir nova seleção após reiniciar o serviço de áudio.
 
 Antes de uma instalação limpa com remoção de preferências, use **Exportar configuração** e guarde o JSON fora da pasta do aplicativo. Depois de reinstalar, importe-o e conceda novamente as permissões de microfone e início no login. A configuração do microfone nos aplicativos de chamada deve ser conferida separadamente.
 
 A assinatura e a notarização de um pacote dependem do perfil usado na distribuição. A existência do perfil Developer ID no projeto não significa que um download já esteja assinado ou notarizado com ele.
+
+## Usar o Dock
+
+O Mixer funciona na barra de menus e pode ficar fora do Dock mesmo enquanto está aberto. Instalar, iniciar no login ou abrir o aplicativo novamente conserva essa escolha.
+
+- Para fixá-lo, abra **Aplicativos** no Finder e arraste **Mixer de Áudio.app** para a área de aplicativos do Dock. O atalho deve apontar para `/Applications/Mixer de Áudio.app`.
+- Para deixá-lo fora do Dock, clique com o botão direito no atalho e desmarque **Opções → Manter no Dock**, ou arraste o ícone para fora até aparecer **Remover**. O Mixer continua funcionando; use seu item na barra de menus para abrir o painel.
+- Se já houver um atalho fixado, a atualização o conserva na mesma posição e reúne duplicatas próprias. Depois de removê-lo, o Mixer não o cria novamente.
 
 ## Configurar a chamada
 
@@ -102,7 +112,7 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 | A arquitetura, os testes e a distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
 | Os cenários conferidos e as pendências de campo | [Compatibilidade](docs/COMPATIBILITY.md) |
 | O histórico completo de versões | [Changelog](docs/CHANGELOG.md) |
-| A entrega atual | [Notas 5.12.4 — desinstalação e envio de suporte](docs/releases/5.12.4.md) |
+| A entrega atual | [Notas 5.12.5 — Dock opcional](docs/releases/5.12.5.md) |
 | As melhorias da 5.11.0 | [Registro das melhorias](docs/IMPROVEMENTS-5.11.0.md) |
 | As regras e os resultados de revisão | [CLAUDE — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
 
@@ -110,6 +120,7 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 
 | Versão | Assunto |
 |---|---|
+| [5.12.4](docs/releases/5.12.4.md) | Desinstalação e envio de suporte |
 | [5.12.3](docs/releases/5.12.3.md) | Limpeza e organização do projeto |
 | [5.12.2](docs/releases/5.12.2.md) | Menor espera no áudio |
 | [5.12.1](docs/releases/5.12.1.md) | Microfone sem repetição e rodapé compacto |
