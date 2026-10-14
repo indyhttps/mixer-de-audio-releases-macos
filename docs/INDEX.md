@@ -2,7 +2,7 @@
 
 **Versão de manutenção:** 5.12.5 · **Driver:** 1.5 · **Mínimo:** macOS 15
 
-Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.5 torna o Dock opcional: a instalação e a abertura não fixam o aplicativo automaticamente, e um atalho escolhido pela usuária é preservado. O visual aprovado, os controles e o processamento de voz continuam preservados. Os testes, o build universal e a instalação limpa estão conferidos; as notas atuais identificam os resultados nativos do Dock e as etapas restantes de distribuição.
+Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.5 torna o Dock opcional: a instalação e a abertura não fixam o aplicativo automaticamente, e um atalho escolhido pela usuária é preservado. O visual aprovado, os controles e o processamento de voz continuam preservados. Os testes, o build universal e a instalação limpa estão conferidos; as notas atuais identificam os resultados nativos do Dock e da publicação verificada.
 
 ## Por onde começar
 
@@ -137,10 +137,11 @@ Nenhum segredo, chave privada, relatório pessoal ou backup privado deve ser cop
 |---|---|
 | [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.5.zip` |
 | [GitHub público](https://github.com/indyhttps/mixer-de-audio-releases-macos) | README de downloads, manuais e releases de `mixer-de-audio-macos.zip` com assinatura `.sig` |
-| Sites | Hospedagem separada do relay de suporte, suas migrações e variáveis privadas |
-| Sentry | Metadados das versões e eventos técnicos do app, conforme a preferência de telemetria |
+| Sites | Hospedagem separada do relay de suporte, suas migrações e variáveis privadas; runtime da versão 3 conservado e endpoint conferido |
+| [Notion](https://app.notion.com/p/39fb69db4e188113a17ce909f6718720) | Acompanhamento do estado do projeto, evidências da entrega e pendências |
+| Sentry | Metadados das versões e eventos técnicos do app, conforme a preferência de telemetria; release 5.12.5 registrada e relida, com credencial restrita preservada na configuração privada a pedido da usuária |
 
-A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacotes. A 5.12.5 usa notas e artefatos próprios. Os testes, o build universal e a instalação limpa já estão registrados; os pacotes estão sendo preparados, e publicação e downloads ainda precisam de conferência. Na 5.12.4, os ZIPs e a tag de fonte conservam o snapshot do commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`. A documentação em `main` e os manuais públicos foram atualizados após publicar para registrar os resultados finais daquela versão; esse registro não refaz os pacotes. Uma mudança do aplicativo ou dos pacotes publicados exige uma nova versão. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
+A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacotes. A 5.12.5 usa notas e artefatos próprios. Os testes, o build universal, a instalação limpa e quatro aberturas reais estão registrados. Os dois pacotes foram publicados e seus downloads e `releases/latest` conferidos; a assinatura Ed25519 passou. A CI aprovou os quatro jobs ([run 38570203789](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38570203789)). Os manifestos, os ZIPs e a tag `v5.12.5` do fonte permanecem no commit `36c4988f221877e0cc2c52fa8decb51ebcbfbb22`; os manuais atuais registram os resultados finais em um commit posterior de documentação, sem alterar esses artefatos. Na 5.12.4, os ZIPs e a tag de fonte conservam o snapshot do commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`. A documentação em `main` e os manuais públicos foram atualizados após publicar para registrar os resultados finais daquela versão; esse registro não refaz os pacotes. Uma mudança do aplicativo ou dos pacotes publicados exige uma nova versão. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
 
 ## Documentação e histórico
 
