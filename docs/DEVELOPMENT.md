@@ -10,6 +10,8 @@ Na 5.12.8, o painel principal usa `ultraThinMaterial` com contorno escuro consta
 
 Os instaladores revalidam identidade e versão do destino depois da autorização: o driver compara componentes numéricos antes de mover o bundle; o aplicativo relê `CFBundleVersion` nas duas validações do `VerifiedBundleReplacement`, inclusive imediatamente antes da troca. Regressões extraem o código real e usam bundles/ferramentas falsos para comprovar downgrade recusado e rollback, sem alterar a instalação real.
 
+As dependências de desenvolvimento do relay usam Drizzle ORM 0.45.2 e esbuild 0.25.12. O override em `Services/SupportRelay/pnpm-workspace.yaml` é restrito ao ramo legado de core-utils 3.3.2; pnpm 11 o registra no lockfile. Para verificar, instale com `--frozen-lockfile`, exercite o carregamento/transformações do ramo e gere o schema em cópia temporária, sem banco real; SQL e snapshots existentes devem permanecer byte idênticos. O Worker publicado não importa essas bibliotecas e sua implantação é independente.
+
 ## Registro da entrega anterior 5.12.7
 
 Na 5.12.7, `LevelMeterDemand` solicita 60 Hz enquanto o painel está visível e 10 Hz para diagnóstico/calibração ocultos. Sem consumidores, o timer para. O callback lê a telemetria mais recente diretamente na thread principal, sem tarefa assíncrona por tick, e só publica valores alterados. O medidor de Saída deixa de interpolar por 80 ms; isso não reduz a latência física do áudio nem garante sincronização com telas de 120 Hz. A coleta própria da calibração continua em 100 ms.
