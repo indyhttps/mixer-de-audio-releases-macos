@@ -1,4 +1,4 @@
-# Mixer de Áudio — manual 5.12.5
+# Mixer de Áudio — manual 5.12.6
 
 [![testes](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml/badge.svg)](https://github.com/indyhttps/MixerDeAudio-macOS/actions/workflows/testes.yml)
 
@@ -6,9 +6,11 @@
 
 O Mixer captura seu microfone real, altera a voz em tempo real e entrega o resultado para chamadas, gravações e jogos. O aplicativo fica na barra de menus do macOS e usa seu próprio driver virtual; não precisa de BlackHole.
 
-Este manual acompanha a versão **5.12.5**, que torna o Dock opcional. O driver já vem dentro do aplicativo. As [notas da entrega](docs/releases/5.12.5.md) registram o escopo e o estado da validação, instalação e distribuição. Os testes e o build universal passaram, e a instalação limpa foi conferida em `/Applications/Mixer de Áudio.app`, com ajustes preservados e sem atalho automático no Dock. Os dois pacotes foram publicados e seus downloads conferidos, incluindo a assinatura Ed25519 do ZIP público. O download oficial fica nas [releases públicas para macOS](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/tag/v5.12.5); o [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases/tag/v5.12.5) guarda o pacote completo com código-fonte.
+Este é o manual da versão **5.12.6**, com o driver incluído no aplicativo. O painel compacto reúne a entrada do microfone e o gate no mesmo controle. Baixe a distribuição nas [releases públicas](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest) e consulte as [notas da versão](docs/releases/5.12.6.md) para conhecer as correções, as verificações e os limites. O [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases) conserva os pacotes completos.
 
-A distribuição usa o **driver 1.5**, recompilado do fonte. Ele oferece uma única entrada virtual: **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** passa a ter apenas a saída que alimenta esse microfone; deixa de aparecer como uma segunda entrada. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.4 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
+A versão 5.12.6 usa o **driver 1.6**, recompilado do fonte, que impede a leitura de áudio antigo após uma volta do buffer ou uma sobrescrita concorrente. Ele conserva a única entrada virtual **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** continua oferecendo somente a saída que alimenta esse microfone. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.5 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
+
+**A 5.12.6 corrige estados e operações de manutenção.** O microfone só mostra **Enviando** quando a captura e o roteamento estão saudáveis; o diagnóstico consulta o áudio sem bloquear o painel e encerra sua amostragem ao terminar. Todos os caminhos de presets explicam a pausa do monitor da mesma forma. O nível de **Entrada** e o gate compartilham um único slider nativo, com a barra ao vivo e o puxador de ajuste na mesma escala. O seletor de fonte fica no cartão **Microfone**; rótulos curtos, tiles centralizados e ações por ícones deixam o painel mais compacto. A desinstalação completa confirma a remoção antes de limpar o estado, e a publicação retomada confere também as notas dos rascunhos.
 
 **A 5.12.5 respeita sua escolha de usar o Dock.** Abrir, reabrir, instalar ou atualizar o Mixer não fixa o aplicativo automaticamente. Ele continua acessível pela barra de menus, inclusive quando você o deixa fora do Dock. Um atalho já fixado é conservado e aponta para o aplicativo em Aplicativos; duplicatas próprias são reunidas nesse atalho. Você pode adicioná-lo ou removê-lo quando quiser, seguindo [Usar o Dock](#usar-o-dock). O visual, os ajustes de voz, os buffers e o driver 1.5 são preservados.
 
@@ -47,7 +49,7 @@ O Mixer funciona na barra de menus e pode ficar fora do Dock mesmo enquanto est�
 
 ## Configurar a chamada
 
-No painel, escolha seu **microfone real**. Quando ele está ativo, seu nome aparece uma vez, com **Em uso** abaixo. “Seguir padrão do sistema” acompanha a seleção do macOS e mostra **Em uso: nome do microfone**. Se a fonte escolhida ficar indisponível ou estiver sendo trocada, essa linha informa a fonte realmente capturada; sem captura, mostra **Em uso: nenhum**.
+No cartão **Microfone**, escolha seu **microfone real**. O seletor mostra a fonte efetivamente capturada, inclusive ao seguir o padrão do sistema ou usar outra fonte temporariamente. O menu preserva sua escolha; a ajuda e a descrição de acessibilidade informam a seleção e o uso atual. Sem captura, o seletor mostra a escolha ou **Microfone indisponível**.
 
 | Aplicativo | Microfone a selecionar nele | Saída de som |
 |---|---|---|
@@ -57,26 +59,28 @@ No painel, escolha seu **microfone real**. Quando ele está ativo, seu nome apar
 
 No FaceTime, abra o menu **Vídeo** na barra de menus e escolha o microfone dedicado. O seletor está descrito no [manual da Apple](https://support.apple.com/pt-br/guide/facetime/fctm26739220/mac). Para um app sem seletor que usa a entrada padrão, escolha o virtual nos [ajustes de entrada do macOS](https://support.apple.com/pt-br/guide/mac-help/mchlp2567/mac) e reabra o app se necessário. Aplicativos com seleção própria podem continuar exigindo a escolha dentro deles.
 
-**Ao usar o virtual como entrada padrão do Mac, mantenha um microfone físico escolhido dentro do Mixer**, como o microfone do MacBook ou seu USB/AirPods. Assim o Mixer captura a fonte real e o outro app recebe a voz processada. A linha **Em uso** confirma essa fonte. **Mixer de Áudio** é a saída de alimentação usada pelo motor e não deve ser escolhida como saída de som da chamada. A entrada única simplifica a seleção; os cenários de funcionamento já observados e os que ainda precisam de teste estão na [matriz de compatibilidade](docs/COMPATIBILITY.md).
+**Ao usar o virtual como entrada padrão do Mac, mantenha um microfone físico escolhido dentro do Mixer**, como o microfone do MacBook ou seu USB/AirPods. Assim o Mixer captura a fonte real e o outro app recebe a voz processada. O seletor do cartão **Microfone** confirma a fonte em uso. **Mixer de Áudio** é a saída de alimentação usada pelo motor e não deve ser escolhida como saída de som da chamada. A entrada única simplifica a seleção; os cenários de funcionamento já observados e os que ainda precisam de teste estão na [matriz de compatibilidade](docs/COMPATIBILITY.md).
 
 **AirPods e Safari:** conecte os fones antes de abrir o navegador. Se trocar ou conectar fones durante o Meet e perder a voz, saia da chamada, encerre e reabra o Safari. A recuperação automática desse cenário ainda precisa ser validada; confira a [matriz de compatibilidade](docs/COMPATIBILITY.md).
 
 ## Usar o painel
 
 - Clique no ícone da barra de menus para abrir o painel; o botão direito abre o menu completo.
-- **Voz Feminina / Neutro** aplicam a voz calibrada ou retornam os controles para zero. **Altura (tom)** e **Timbre (formantes)** permitem ajustes finos. No motor WSOLA atual, os dois ajustes contribuem para a transposição combinada.
-- **Microfone: Mudo** interrompe o envio; **Enviando** indica a transmissão ativa. **Voz: Desligado** desliga o processamento; **Ligado** indica o motor ativo. O ícone da barra e o rodapé mostram o estado.
+- **Voz feminina / Neutro** aplicam a voz calibrada ou retornam os controles para zero. **Altura** e **Timbre** permitem ajustes finos. No motor WSOLA atual, os dois ajustes contribuem para a transposição combinada.
+- **Microfone: Mudo** interrompe o envio; **Enviando** depende da captura e do roteamento saudáveis. O tile também informa **Desligado**, **Sem microfone**, **Conectando** ou **Interrompido**, e a barra de menus usa o mesmo estado. **Voz: Desligada** desliga o processamento; **Ligada** solicita sua ativação.
 - **Entrada** mostra o sinal cru; **Saída** mostra o sinal entregue pelo Mixer aos aplicativos. A recepção na chamada também depende da entrada selecionada no aplicativo.
-- Os botões circulares **Fechar** e **Sair** escondem o painel mantendo o áudio ou encerram o aplicativo, respectivamente. **Reconectar**, **Diagnóstico** e **Desinstalar** também ficam na linha de ações. O painel principal é compacto e rolável, com cabeçalho próprio para arrastar; as janelas auxiliares permitem redimensionar.
+- Os ícones circulares **Fechar** e **Sair** escondem o painel mantendo o áudio ou encerram o aplicativo, respectivamente. **Reconectar**, **Diagnóstico** e **Desinstalar** também ficam na linha de ações. A ajuda ao passar o ponteiro e os nomes de acessibilidade identificam cada ação. O painel principal é compacto e rolável, com cabeçalho próprio para arrastar; as janelas auxiliares permitem redimensionar.
 - A cápsula no rodapé mostra estados curtos, como **Ativo**, **Microfone mudo** ou **Desligado**. Um aviso recente aparece como **Novo aviso**. Clique para abrir os detalhes do áudio e o aviso completo, apresentados com texto centralizado. **Todos os avisos…** abre **Estado e avisos**, uma janela compacta com estado atual e histórico centralizados; ela permite rolagem e redimensionamento. As mensagens usam inicial maiúscula, como **Ativo**, também nos detalhes. As opções do painel dão acesso a **Preferências**, **Presets de voz** e **Guia de uso**.
 
 ## Gate, canal e monitor
 
 **Calibrar** prepara o microfone, mede 3 segundos de silêncio e 5 de fala, e ajusta o gate. A calibração fica associada ao microfone real; dispositivos ainda não calibrados usam o valor de fallback. O resultado pode ser desfeito nas opções do painel ou nas preferências. Ajustes mais baixos favorecem fala baixa; mais altos bloqueiam mais ruído.
 
+O slider nativo de **Entrada** reúne o nível ao vivo e o ajuste do gate, sem marcas de escala. Arraste o puxador para definir o limiar indicado em dB: o sinal ultrapassa esse ponto na mesma escala da barra. A faixa, o passo de 1 dB e a calibração permanecem iguais. As instruções aparecem durante a calibração; a ajuda do controle conserva a explicação do gate.
+
 Em **Preferências → Entrada e monitor**, uma interface com várias entradas pode usar um **canal específico**. “Misturar todos” conserva o comportamento de mistura original. Os canais são apresentados a partir de 1; um canal indisponível é indicado.
 
-**Ouvir minha voz** toca o sinal processado na saída escolhida nas preferências, ou na saída padrão do Mac. Use fones. A guarda pausa o monitor no par microfone embutido + alto-falantes embutidos. Se usar caixas externas, marque **Esta saída usa alto-falantes externos** para proteger também esse cenário. A pausa do monitor não interrompe a transmissão aos aplicativos.
+**Ouvir minha voz** toca o sinal processado na saída escolhida nas preferências, ou na saída padrão do Mac. Use fones. A guarda pausa o monitor no par microfone embutido + alto-falantes embutidos. Se usar caixas externas, marque **Esta saída usa alto-falantes externos** para proteger também esse cenário. O estado **Pausado · Use fones** identifica essa proteção. A pausa do monitor não interrompe a transmissão aos aplicativos.
 
 ## Presets, backup e atraso
 
@@ -100,7 +104,7 @@ Atualizações e telemetria podem ser controladas nas preferências. Uma atualiz
 
 No painel, escolha **Desinstalar**, ou use **Desinstalar o Mixer de Áudio…** no menu da barra. É possível remover apenas o aplicativo ou remover também o driver. A remoção completa do driver pede autorização de administrador.
 
-Se cancelar a autorização, os aplicativos e o estado de usuário são preservados. Em **Remover só o app**, a limpeza de estado depende da remoção confirmada dos bundles. O desinstalador externo executa a retirada do login e do agregado legado depois da autorização, antes de remover os arquivos; as demais limpezas dependem da remoção confirmada. Se a remoção autorizada falhar, login e agregado podem já ter sido alterados, e o aviso informa esse limite. Uma falha não produz a mensagem de sucesso.
+Se cancelar a autorização, os aplicativos e o estado de usuário são preservados. Tanto **Remover só o app** quanto a remoção completa conferem os bundles e links restantes antes de limpar o estado ou anunciar sucesso. Uma falha parcial é informada e mantém o app aberto. O desinstalador externo executa a retirada do login e do agregado legado depois da autorização, antes de remover os arquivos; as demais limpezas dependem da remoção confirmada. Se essa remoção autorizada falhar, login e agregado podem já ter sido alterados, e o aviso informa esse limite. Uma falha não produz a mensagem de sucesso.
 
 O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das versões anteriores e resíduos próprios. A identificação de aplicativos e do driver usa o bundle id exato; itens de login e atalhos são removidos pelos caminhos confirmados. BlackHole, Voicemod comercial e outros dispositivos/programas de terceiros são preservados.
 
@@ -112,14 +116,15 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 | A arquitetura, os testes e a distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
 | Os cenários conferidos e as pendências de campo | [Compatibilidade](docs/COMPATIBILITY.md) |
 | O histórico completo de versões | [Changelog](docs/CHANGELOG.md) |
-| A entrega atual | [Notas 5.12.5 — Dock opcional](docs/releases/5.12.5.md) |
+| A entrega em preparação | [Notas 5.12.6 — confiabilidade do áudio e da manutenção](docs/releases/5.12.6.md) |
 | As melhorias da 5.11.0 | [Registro das melhorias](docs/IMPROVEMENTS-5.11.0.md) |
-| As regras e os resultados de revisão | [CLAUDE — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
+| As regras e os resultados de revisão | [AGENTS — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
 
 ### Releases anteriores
 
 | Versão | Assunto |
 |---|---|
+| [5.12.5](docs/releases/5.12.5.md) | Dock opcional |
 | [5.12.4](docs/releases/5.12.4.md) | Desinstalação e envio de suporte |
 | [5.12.3](docs/releases/5.12.3.md) | Limpeza e organização do projeto |
 | [5.12.2](docs/releases/5.12.2.md) | Menor espera no áudio |

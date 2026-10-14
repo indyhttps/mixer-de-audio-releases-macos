@@ -1,10 +1,22 @@
 # Histórico do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.5.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.6.md)
 
 Este arquivo preserva integralmente as entradas de versão que estavam no README. Elas descrevem o comportamento e as verificações de cada época; os procedimentos atuais ficam no [manual](../README.md) e no [guia de desenvolvimento](DEVELOPMENT.md).
 
 ---
+
+## Versão 5.12.6 — confiabilidade do áudio e da manutenção — 2026-10-14
+
+- Driver **1.6** identifica a geração temporal de cada frame, rejeita dados expirados/futuros e usa sequência de publicação com uma tentativa CAS por slot. Sobrescritas concorrentes e A → B → A não misturam áudio de instantes diferentes; PCM válido, ganho, mute, topologia e UIDs são preservados.
+- Tile do microfone e ícone da barra usam o estado real da captura/entrega. Diagnóstico consulta a saúde de forma assíncrona e libera sua demanda de amostragem ao terminar. Painel, calibração e diagnóstico não passam a controlar o timer uns dos outros.
+- Presets do painel, menu e janela compartilham aplicação e confirmação quando o monitor está pausado. Entrada e gate usam um único slider AppKit sem marcas, com medidor em tempo real e puxador original na mesma escala de dB. O seletor de fonte fica no cartão Microfone, com fonte efetiva visível; o painel tem menos legendas, rótulos curtos, tiles centralizados e rodapé de ícones com ajuda e nomes de acessibilidade. Faixa, passo, calibração e processamento permanecem iguais.
+- Desinstalação completa exige ausência confirmada dos bundles e links próprios antes da limpeza de estado. Falha parcial mantém o app aberto e não anuncia sucesso. Publicador reconcilia notas somente em drafts e relê identidade, tag, texto e estado antes de publicar.
+- App e relay compartilham fixtures de redação de dados. O relay inclui `/ready` para conferir configuração/banco sem emitir desafios, consumir quotas ou postar relatórios; `/health` continua independente do banco.
+- **Validação disponível:** 113 testes Swift, 60 testes Python, 10 testes do relay e harnesses do driver com ASan/UBSan/TSan aprovados. Benchmark sintético arm64 confirmou PCM válido bit idêntico e mediu custo abaixo dos prazos nos blocos observados. Build universal e instalação do desenho final confirmados. O painel passou de 922 para 795 pt e foi conferido inteiro, sem cortes, com tiles centralizados, fonte integrada e único slider de Entrada/gate. O teste 6 → 7 refletiu −36 → −35 dB e terminou em +6; nove preferências, +23/+43, monitor desligado, login ativado e Dock preservados. Diagnóstico da etapa anterior teve zero falhas e zero reparos. A entrada final estava em silêncio; não houve teste de voz do medidor nem VoiceOver real. Pacotes, GitHub, downloads e CI continuam pendentes de confirmação.
+- Relay Sites **v4 publicado**, com fonte `002f50245b1ad101a307aa36d4d26cc033af3501`; `/health` e `/ready` conferidos com 200 e `ready: true`. Release técnica Sentry 5.12.5 relida com 200; consulta de issues recebeu 403 pela credencial restrita, sem conclusão sobre ausência de erros. A descrição do Notion foi corrigida para não apresentar atalhos excluídos como recurso entregue.
+- Regras operacionais reunidas em `AGENTS.md`, com referências neutras; a execução do aplicativo não depende de assistentes externos.
+- WSOLA, valores de voz, gate e Dock opcional permanecem preservados. Nenhum novo atalho foi acrescentado. Evidências e limites desta preparação ficam nas [notas 5.12.6](releases/5.12.6.md); não há nova confirmação auditiva ou de chamada.
 
 ## Versão 5.12.5 — Dock opcional — 2026-10-14
 
@@ -113,7 +125,7 @@ As demais alterações e os resultados da validação/publicação desta versão
 - **`./publicar.sh`** (espelho do `LancarRelease` do Windows): tag + release + upload + conferência
   de SHA-256 nos **dois** repositórios (privado completo + público só-app) num comando — elimina o
   risco de publicar num só e deixar o auto-update cego.
-- Badge do CI no topo deste README; receita da deploy key (mudanças no workflow) no CLAUDE.md.
+- Badge do CI no topo deste README; receita da deploy key (mudanças no workflow) no AGENTS.md.
 
 ---
 
@@ -197,7 +209,7 @@ As demais alterações e os resultados da validação/publicação desta versão
   (compartilhada byte-a-byte com o Windows — reduzi-la é possível, mas muda o som e exige A/B).
 - **Suíte de testes permanente do motor** (`Tests/MixerDspTests`, 14 testes, ~1 s): neutro
   bit-exato, latência, determinismo, F0 pós-shift, preset 23/47, toggle sem clique, NaN/Inf.
-  Rode com `./test.sh` antes de mexer no DSP. Também: `CLAUDE.md` (piso operacional), exceção do
+  Rode com `./test.sh` antes de mexer no DSP. Também: `AGENTS.md` (piso operacional), exceção do
   app pronto no `.gitignore` e comentário "correto de propósito" no driver (escopo Global).
 - `CFBundleVersion` 4.2 → **5.1** (a 5.0 saiu sem o bump; o anti-downgrade do auto-instalador
   compara versões e precisa do número certo para atualizar instalações antigas).

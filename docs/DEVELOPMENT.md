@@ -1,8 +1,10 @@
 # Desenvolvimento do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.5.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.6.md)
 
-Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.5. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
+Este guia descreve a arquitetura e o fluxo de trabalho do código 5.12.6. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [AGENTS.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas atuais acompanham ambos os ZIPs.
+
+A 5.12.6 introduz o driver 1.6 com identidade temporal e publicação atômica por slot, estado de transmissão compartilhado, amostragem do diagnóstico por demanda e confirmação uniforme de presets. A remoção completa e a retomada de drafts passam por novas barreiras de verificação. Entrada e gate compartilham um `NSSlider` sem marcas, preservando o puxador original, a faixa e o passo. A célula representa o nível bruto `inLevelDb` em tempo real na mesma escala de dB do limiar; esse valor é apenas telemetria de apresentação, sem alterar áudio ou gate. O seletor foi integrado ao cartão Microfone, os tiles ficaram centralizados e o rodapé mantém ícones com ajuda e nomes de acessibilidade, com menos legendas e rótulos em formato de frase. Build universal, instalação e captura do desenho final foram conferidos. A sonda mediu `CONTENT_HEIGHT=795.0`, refletido em `DesignTokens`, frente aos 922 pt anteriores; o painel inteiro ficou sem cortes. O teste via `setValue` confirmou gate 6 → 7 e limiar −36 → −35 dB, com restauração a +6. A entrada estava em −90 dB; movimento com voz e VoiceOver real não foram validados. Pacotes, publicação e CI permanecem pendentes nas notas próprias. As regras operacionais estão em `AGENTS.md`, sem vínculo com um assistente específico; o runtime do app não depende de assistentes externos.
 
 A 5.12.5 conserva o aplicativo como agente na barra de menus e retira a fixação automática no Dock. Abrir, reabrir, iniciar no login, instalar ou atualizar não pode criar um atalho persistente. Um atalho próprio já existente é conservado na mesma posição, apontando para o caminho canônico; duplicatas são reunidas nele. A ausência de atalho também é um estado válido e deve permanecer após reabrir. O DSP, os buffers, as preferências, o visual aprovado e o driver 1.5 conservam o comportamento da 5.12.4.
 
@@ -100,7 +102,11 @@ Ao mudar o C, aumente `CFBundleVersion` em `Vendor/MixerDeAudioDriver-src/Info.p
 
 O build do app e da release chama essa etapa automaticamente. O binário histórico em `Vendor/` não é reutilizado em uma nova distribuição.
 
-O driver do fonte tem versão **1.5** na distribuição 5.12.5, preservada desde a 5.12.0. O dispositivo escritor preserva nome e UID `MixerDeAudio_UID`, com somente saída, e o microfone dedicado preserva nome e UID `MixerDeAudio_Microphone_UID`, com somente entrada. A topologia retira a entrada duplex antiga; o ring e o clock continuam compartilhados entre escritor e consumidores. O app deve resolver o escritor ao enviar áudio e o microfone dedicado ao medir ou ler a transmissão. Nenhum deles pode ser escolhido como fonte física do próprio Mixer. O escritor continua inelegível como saída padrão do sistema.
+O driver do fonte tem versão **1.6** na preparação da 5.12.6, conservando a topologia da 1.5. O dispositivo escritor preserva nome e UID `MixerDeAudio_UID`, com somente saída, e o microfone dedicado preserva nome e UID `MixerDeAudio_Microphone_UID`, com somente entrada. A topologia retira a entrada duplex antiga; o ring e o clock continuam compartilhados entre escritor e consumidores. O app deve resolver o escritor ao enviar áudio e o microfone dedicado ao medir ou ler a transmissão. Nenhum deles pode ser escolhido como fonte física do próprio Mixer. O escritor continua inelegível como saída padrão do sistema.
+
+Na 1.6, cada slot do ring guarda identidade absoluta do frame, payload estéreo em um `UInt64` atômico e sequência de publicação. O escritor reserva o slot com uma única tentativa CAS, sem spin; colisão não publica o frame. O leitor confere identidade e a mesma sequência par antes/depois da cópia, devolvendo silêncio ao detectar mudança. As operações são `seq_cst`, e o armazenamento tem assert de lock-free. A janela retida também rejeita frames anteriores a `written - ring` e posteriores à marca publicada. Não reiniciar o contador de publicação evita ABA entre sessões; PCM válido, aritmética de ganho, mute e UIDs permanecem iguais.
+
+`bash Tests/Driver/benchmark-timing.sh` mede cópia e publicação com leitor concorrente em blocos 64/128/256 e limpeza de gap completo, sem abrir HAL, microfone ou saída física. O instrumento verifica PCM e relata percentis; não usa limiar temporal instável de CI. Registre arquitetura e condições do ensaio. Medições arm64 não aprovam desempenho Intel físico ou áudio ouvido.
 
 Seleções salvas por consumidores no UID legado não migram automaticamente: o usuário precisa escolher “Mixer de Áudio — Microfone” no aplicativo consumidor. A preservação do UID dedicado mantém a identidade das seleções que já o utilizavam. A enumeração de um único dispositivo com canais de entrada e uma leitura HAL com sinal são verificações locais; não substituem chamadas reais no Safari, Discord ou OBS.
 
@@ -161,9 +167,11 @@ Nomes importados de presets são normalizados por trim antes de persistir, com a
 
 ## Diagnóstico e latência
 
-O diagnóstico gera uma prévia local e pode reparar instalação/roteamento. Enviar ao suporte é uma operação separada, sobre o relatório mostrado. O relatório contém estado técnico anonimizado; não inclui uma gravação de voz. Testes e QA não devem postar relatórios reais como efeito colateral.
+O diagnóstico gera uma prévia local e pode reparar instalação/roteamento. Sua consulta de saúde é assíncrona; painel, calibração e diagnóstico mantêm demandas separadas no `LevelMeterDemand`, liberadas ao terminar cada uso. O estado `MicrophoneTransmissionState` é compartilhado pelo tile e pelo ícone da barra, com base na saúde da captura/entrega; preferência de mute desativada não comprova transmissão. Enviar ao suporte é uma operação separada, sobre o relatório mostrado. O relatório contém estado técnico anonimizado; não inclui uma gravação de voz. Testes e QA não devem postar relatórios reais como efeito colateral.
 
 O envio usa o serviço em `Services/SupportRelay`, hospedado em `https://mixer-de-audio-suporte.ingryd.chatgpt.site`. `GET /v1/challenge` emite o desafio temporário; `POST /v1/report` aceita o relatório após verificar validade, prova SHA-256, uso único, formato, tamanho e limites de envio. `SUPPORT_WEBHOOK` e `RELAY_SECRET` são variáveis secretas da hospedagem, sem cópia no app, no Git ou nos pacotes. O serviço armazena contadores/nonces e hashes de origem, sem persistir o relatório; falha preserva o relatório local.
+
+`GET /health` verifica somente a disponibilidade do processo; `GET /ready` valida configuração e consulta o banco sem criar desafio, consumir quota ou enviar conteúdo. Na versão 4 publicada no Sites, ambos retornaram HTTP 200 e `/ready` informou `ready: true`. O resultado comprova prontidão, não entrega de relatório ao destino. As fixtures em `Services/SupportRelay/tests/fixtures/privacy.json` são consumidas pelos testes Swift e Node para guardar paridade de redação de credenciais, webhooks, UIDs e endereços Bluetooth.
 
 Corpos JSON nulos, arrays e valores primitivos são rejeitados com HTTP 400 antes de acessar seus campos ou alterar metadados de abuso. Esse caminho não consulta o banco nem encaminha conteúdo ao suporte. As fixtures usam transporte simulado para conferir esse comportamento.
 
@@ -187,7 +195,7 @@ O atraso algorítmico do WSOLA não representa sozinho o atraso de transmissão,
 
 A release exige árvore limpa. `MIXER_ALLOW_DIRTY_RELEASE=1` permite preparar um candidato local, que o publicador recusa. `MIXER_RELEASE_SKIP_TESTS=1` serve somente para reempacotar um fonte já validado; a execução normal roda as suítes Swift, driver e publicação. Antes da publicação, a árvore, commit, fonte e ZIPs precisam continuar idênticos ao manifesto.
 
-`publicar.sh --dry-run` confere os artefatos e mostra o plano sem autenticação ou escrita remota. A execução real valida a `main` remota e a tag, prepara as duas releases como rascunhos e confere uploads byte a byte. Uma interrupção pode ser retomada com o mesmo comando; assets divergentes não são sobrescritos. As releases só ficam visíveis após ambas conterem os assets completos. O publicador confere downloads públicos e `releases/latest`, que o updater consulta.
+`publicar.sh --dry-run` confere os artefatos e mostra o plano sem autenticação ou escrita remota. A execução real valida a `main` remota e a tag, prepara as duas releases como rascunhos e confere uploads byte a byte. Uma interrupção pode ser retomada com o mesmo comando; assets divergentes não são sobrescritos. Depois de verificar os assets, notas divergentes são atualizadas somente em drafts. O publicador relê id, tag, texto e estado antes de prosseguir; divergência em release publicada interrompe o fluxo sem sobrescrever seu corpo. As releases só ficam visíveis após ambas conterem os assets completos. O publicador confere downloads públicos e `releases/latest`, que o updater consulta.
 
 Uma mudança no aplicativo ou nos pacotes de uma release publicada exige aumentar `VERSION`, sincronizar os metadados e criar notas próprias. A entrega 5.12.4 usa a tag `v5.12.4` no repositório privado, vinculada ao commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`; seus ZIPs, assinaturas, manifestos e tag permanecem imutáveis. O comando daquela entrega foi `./publicar.sh docs/releases/5.12.4.md`. A 5.12.5 foi publicada com `./publicar.sh docs/releases/5.12.5.md`, a partir do fonte validado `36c4988f221877e0cc2c52fa8decb51ebcbfbb22`. Seus ZIPs, manifestos e tag do fonte também permanecem imutáveis; a documentação final e a manutenção posterior da CI em `main` recebem o acompanhamento em commits separados. A manutenção do workflow pode compilar pacotes para validação em CI, sem substituir os ZIPs publicados ou mover a tag da release. Para uma próxima versão, faça commit e push da mesma fonte validada, prepare os novos artefatos e use as notas correspondentes. Preserve as releases anteriores.
 
@@ -229,9 +237,11 @@ Materiais de vidro não renderizam plenamente fora da tela. QA do painel precisa
 
 ## Desinstalação e cancelamento
 
-A identificação de bundles usa `com.local.mixerdeaudio` e os identificadores legados documentados, com revalidação antes da remoção. A identificação por nome ou glob não autoriza remover programas de terceiros. O driver continua em 1.5; a correção da 5.12.4 não altera sua topologia ou processamento.
+A identificação de bundles usa `com.local.mixerdeaudio` e os identificadores legados documentados, com revalidação antes da remoção. A identificação por nome ou glob não autoriza remover programas de terceiros. A correção histórica da 5.12.4 conservou o driver 1.5; a 5.12.6 usa o driver 1.6, mantendo a mesma topologia.
 
 Nos dois fluxos corrigidos, a autorização antecede as alterações destrutivas. O cancelamento conserva os bundles e o estado de usuário. Em **Remover só o app**, toda a limpeza de estado depende da remoção confirmada. No desinstalador externo, o passo autorizado revalida os IDs, libera um worker do usuário para executar os binários originais com `--unregister-login --destroy-legacy-aggregate` e aguarda sua conclusão antes de remover os arquivos como administrador. O worker publica o marcador de conclusão por `mv` atômico, depois de escrever seu resultado completo em um arquivo temporário. LaunchServices, preferências, TCC, atalhos e encerramento só seguem após confirmar a ausência dos bundles. Uma falha posterior à autorização pode deixar login/agregado alterados; o aviso informa esse limite e a limpeza restante é interrompida. Autorização concedida não comprova que o comando removeu todos os destinos.
+
+Na remoção completa interna da 5.12.6, o retorno da autorização e a ausência de todos os bundles/links próprios são uma barreira antes de qualquer limpeza de estado. Links quebrados contam como resíduo. Falha parcial mantém o app aberto, preserva preferências, TCC, login e registros e informa que a remoção dos arquivos pode ter sido parcial. Não há promessa de transação atômica do filesystem.
 
 As regressões devem usar bundles falsos e ferramentas simuladas para cancelar a autorização, provocar falha de remoção e concluir com sucesso. Inclua um conjunto com cópia gravável e outra que precisa de autorização, conferindo que o cancelamento preserva ambas. Não execute a desinstalação real como etapa dos testes automatizados.
 
@@ -242,13 +252,13 @@ O relay confere novamente `Date.now()` depois do consumo do identificador do des
 ## Regras de mudança
 
 - O ouvido da usuária valida mudanças de som; medição equivalente não substitui A/B auditivo.
-- `Vendor/MixerDsp/` mantém paridade byte a byte com o Windows, com a exceção de includes documentada em CLAUDE. Mudanças de geometria do gate também exigem espelho.
+- `Vendor/MixerDsp/` mantém paridade byte a byte com o Windows, com a exceção de includes documentada em AGENTS.md. Mudanças de geometria do gate também exigem espelho.
 - Não “corrigir” constantes dormentes de preset Windows no header para igualar o preset ativo do macOS.
 - Não remover o motor legado nem alterar a linguagem visual.
 - Instalação, desinstalação e limpeza identificam o bundle id próprio; software de terceiros permanece fora do escopo.
 - Não entregar mudança relevante sem a suíte apropriada e registrar limites honestos de validação.
 
-As falhas conhecidas e falsos positivos refutados ficam em [CLAUDE.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) e [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md), no repositório privado.
+As falhas conhecidas e falsos positivos refutados ficam em [AGENTS.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) e [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md), no repositório privado.
 
 
 ## Buffers e prazos na 5.12.2

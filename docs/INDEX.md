@@ -1,8 +1,8 @@
 # Mapa do projeto
 
-**Versão de manutenção:** 5.12.5 · **Driver:** 1.5 · **Mínimo:** macOS 15
+**Versão em preparação:** 5.12.6 · **Driver:** 1.6 · **Mínimo:** macOS 15
 
-Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.5 torna o Dock opcional: a instalação e a abertura não fixam o aplicativo automaticamente, e um atalho escolhido pela usuária é preservado. O visual aprovado, os controles e o processamento de voz continuam preservados. Os testes, o build universal e a instalação limpa estão conferidos; as notas atuais identificam os resultados nativos do Dock e da publicação verificada.
+Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A 5.12.6 corrige a validade temporal do áudio no driver, o estado do microfone, o diagnóstico e os fluxos de manutenção. Conserva o Dock opcional, a Central de Controle/Liquid Glass e os ajustes de voz. As [notas atuais](releases/5.12.6.md) registram testes, build universal e instalação da revisão visual final. O painel de 795 pt, com gate e Entrada no mesmo slider, foi conferido inteiro e sem cortes; pacotes, publicação e CI ainda aguardam conclusão.
 
 ## Por onde começar
 
@@ -16,7 +16,7 @@ Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mi
 | Resolver falta de som | [Roteiro de diagnóstico](../README.md#quando-falta-som) |
 | Entender o código e compilar | [Guia de desenvolvimento](DEVELOPMENT.md) |
 | Conferir cenários testados e pendentes | [Compatibilidade](COMPATIBILITY.md) |
-| Ver o escopo da entrega atual | [Notas 5.12.5](releases/5.12.5.md) |
+| Ver o escopo da entrega atual | [Notas 5.12.6](releases/5.12.6.md) |
 | Consultar decisões e versões anteriores | [Histórico](CHANGELOG.md) |
 
 ## Pastas e arquivos principais
@@ -42,7 +42,7 @@ Os caminhos de fonte e ferramentas abaixo pertencem ao [repositório privado](ht
 | `VERSION` | Versão autoritativa; `Info.plist` e `Version.xcconfig` recebem os valores por sincronização |
 | `Info.plist` | Identidade, versão, mínimo macOS e metadados do aplicativo |
 | `.gitignore` | Exclusões de caches, produtos gerados e projeto Xcode gerado |
-| `CLAUDE.md` e `REVISAO-CETICA.md` | Regras operacionais e registros de revisão no repositório privado |
+| `AGENTS.md` e `REVISAO-CETICA.md` | Regras operacionais e registros de revisão no repositório privado |
 | `.build/` | Produtos locais, ferramentas, artefatos de release e dados privados de manutenção; ver a distinção abaixo |
 
 ### Código do aplicativo
@@ -65,6 +65,7 @@ Os caminhos de fonte e ferramentas abaixo pertencem ao [repositório privado](ht
 |---|---|
 | Buffers, saúde e atraso | `AudioRingBuffer.swift`, `AudioReliability.swift`, `AudioLatencyMeasurement.swift` |
 | Gate e proteção de monitor | `NoiseGate.swift`, `MonitorGuard.swift` |
+| Estado de transmissão e demanda dos medidores | `MixerPresentationState.swift` |
 | Presets e configuração portátil | `UserPreset.swift`, `ConfigurationArchive.swift` |
 | Identidade e troca de bundles | `ApplicationIdentity.swift`, `VerifiedBundleReplacement.swift` |
 | Atualização verificada | `UpdateGuards.swift`, `UpdatePipeline.swift`, `ReleaseSignatureVerifier.swift` |
@@ -97,8 +98,8 @@ Execute os comandos a partir da raiz do código-fonte. O [guia de desenvolviment
 | Rodar testes de manifesto, instalação e publicação | `python3 -m unittest discover -s Tests/Release -p 'test_*.py'` |
 | Compilar app e driver universais | `./build.sh` |
 | Preparar e validar os dois ZIPs | `./release.sh` |
-| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.5.md --dry-run` |
-| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.5.md` |
+| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.6.md --dry-run` |
+| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.6.md` |
 | Remover a própria instalação | `Desinstalar Mixer de Áudio.command` ou a opção Desinstalar no app |
 
 | Ferramentas em `tools/` | Responsabilidade |
@@ -135,11 +136,13 @@ Nenhum segredo, chave privada, relatório pessoal ou backup privado deve ser cop
 
 | Destino | O que fica nele |
 |---|---|
-| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.5.zip` |
+| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.6.zip` |
 | [GitHub público](https://github.com/indyhttps/mixer-de-audio-releases-macos) | README de downloads, manuais e releases de `mixer-de-audio-macos.zip` com assinatura `.sig` |
-| Sites | Hospedagem separada do relay de suporte, suas migrações e variáveis privadas; runtime da versão 3 conservado e endpoint conferido |
+| Sites | Relay versão 4 publicado separadamente; `/health` e `/ready` conferidos com HTTP 200, `ready: true`, sem envio de relatório |
 | [Notion](https://app.notion.com/p/39fb69db4e188113a17ce909f6718720) | Acompanhamento do estado do projeto, evidências da entrega e pendências |
-| Sentry | Metadados das versões e eventos técnicos do app, conforme a preferência de telemetria; release 5.12.5 registrada e relida, com credencial restrita preservada na configuração privada a pedido da usuária |
+| Sentry | Release 5.12.5 relida com HTTP 200; credencial de releases recebe HTTP 403 para issues. Registro 5.12.6 pendente da publicação confirmada |
+
+A preparação da 5.12.6 tem 113 testes Swift, 60 testes Python e 10 testes do relay aprovados, além dos harnesses do driver e benchmark arm64. O build universal e a instalação via SelfInstaller do desenho final foram confirmados. O painel de 795 pt apareceu inteiro, com Entrada e gate no mesmo slider, seletor integrado, tiles centralizados e rodapé de ícones com ajuda/AX. O teste do gate 6 → 7 refletiu −36 → −35 dB e terminou restaurado em +6; os nove ajustes e o Dock foram preservados. A entrada estava em silêncio (−90 dB), sem comprovar movimento do medidor com voz ou uso real do VoiceOver. O diagnóstico anterior registrou zero falhas e zero reparos. Pacotes, GitHub, downloads e CI aguardam confirmação. O relay Sites v4 foi publicado de forma independente.
 
 A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacotes. A 5.12.5 usa notas e artefatos próprios. Os testes, o build universal, a instalação limpa e quatro aberturas reais estão registrados. Os dois pacotes foram publicados e seus downloads e `releases/latest` conferidos; a assinatura Ed25519 passou. A CI aprovou os quatro jobs ([run 38570203789](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38570203789)). Os manifestos, os ZIPs e a tag `v5.12.5` do fonte permanecem no commit `36c4988f221877e0cc2c52fa8decb51ebcbfbb22`; os manuais atuais e a manutenção posterior da CI registram o acompanhamento em commits separados, sem alterar esses artefatos. O seletor manual de runner do commit `f1382c8427cd7546c5108ec4d8cf283d76bd4589` permite `macos-26-intel` diante da indisponibilidade de ARM, mantendo `macos-latest` para pushes e pull requests; a execução manual Intel [38578342396](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38578342396) concluiu com quatro jobs aprovados, incluindo testes Swift, sanitizers e build universal da distribuição. Na 5.12.4, os ZIPs e a tag de fonte conservam o snapshot do commit `f011bf8186f3a3cf748ea0a488e723b26df0b6c0`. A documentação em `main` e os manuais públicos foram atualizados após publicar para registrar os resultados finais daquela versão; esse registro não refaz os pacotes. Uma mudança do aplicativo ou dos pacotes publicados exige uma nova versão. O README e as notas públicas usam somente resultados já conferidos. Credenciais dos conectores ficam na configuração privada; não pertencem ao fonte distribuído.
 
@@ -152,11 +155,12 @@ A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacot
 | [COMPATIBILITY](COMPATIBILITY.md) | Evidências de campo, cenários pendentes e roteiro de verificação |
 | [CHANGELOG](CHANGELOG.md) | Histórico completo do projeto |
 | [IMPROVEMENTS-5.11.0](IMPROVEMENTS-5.11.0.md) | Registro das melhorias daquela versão |
-| [CLAUDE — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/CLAUDE.md) | Regras do projeto e cuidados operacionais |
+| [AGENTS — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) | Regras do projeto e cuidados operacionais |
 | [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) | Resultados, decisões e limites das revisões |
 
 | Release | Assunto |
 |---|---|
+| [5.12.6](releases/5.12.6.md) | Confiabilidade do driver, interface e manutenção; preparação da entrega |
 | [5.12.5](releases/5.12.5.md) | Dock opcional e instalação sem fixação automática |
 | [5.12.4](releases/5.12.4.md) | Desinstalação e expiração de desafios no suporte |
 | [5.12.3](releases/5.12.3.md) | Limpeza e organização do projeto |
@@ -168,4 +172,4 @@ A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacot
 | [5.11.0](releases/5.11.0.md) | Melhorias de configuração, diagnóstico e confiabilidade |
 | [5.10.4](releases/5.10.4.md) | Distribuição e verificações da versão anterior |
 
-Notas antigas preservam o contexto da versão em que foram escritas. As verificações da entrega atual ficam nas notas 5.12.5; confirmações humanas anteriores não são apresentadas como novos testes desta versão.
+Notas antigas preservam o contexto da versão em que foram escritas. As verificações da entrega atual ficam nas notas 5.12.6; confirmações humanas anteriores não são apresentadas como novos testes desta versão.
