@@ -116,7 +116,7 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 | A arquitetura, os testes e a distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
 | Os cenários conferidos e as pendências de campo | [Compatibilidade](docs/COMPATIBILITY.md) |
 | O histórico completo de versões | [Changelog](docs/CHANGELOG.md) |
-| A entrega em preparação | [Notas 5.12.6 — confiabilidade do áudio e da manutenção](docs/releases/5.12.6.md) |
+| A entrega atual | [Notas 5.12.6 — confiabilidade do áudio e da manutenção](docs/releases/5.12.6.md) |
 | As melhorias da 5.11.0 | [Registro das melhorias](docs/IMPROVEMENTS-5.11.0.md) |
 | As regras e os resultados de revisão | [AGENTS — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
 

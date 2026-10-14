@@ -2,11 +2,11 @@
 
 **Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.6.md)
 
-Esta matriz separa os resultados históricos dos cenários que precisam de evidência própria no app **5.12.6/driver 1.6**. A entrada continua sendo **Mixer de Áudio — Microfone**; **Mixer de Áudio** oferece somente a saída de alimentação. A manutenção corrige publicação e validade temporal de frames no driver, estado da UI e fluxos de diagnóstico/desinstalação, preservando DSP, gate, ajustes e Dock opcional. Os testes locais, o build universal e a instalação do desenho final passaram. A captura do painel e o ajuste do gate estão registrados abaixo; pacotes publicados e CI ainda aguardam confirmação. Resultados humanos anteriores continuam associados à versão em que foram obtidos.
+Esta matriz separa os resultados históricos dos cenários que precisam de evidência própria no app **5.12.6/driver 1.6**. A entrada continua sendo **Mixer de Áudio — Microfone**; **Mixer de Áudio** oferece somente a saída de alimentação. A manutenção corrige publicação e validade temporal de frames no driver, estado da UI e fluxos de diagnóstico/desinstalação, preservando DSP, gate, ajustes e Dock opcional. Os testes locais, o build universal e a instalação do desenho final passaram. A captura do painel, o ajuste do gate, a publicação dos pacotes e a CI aprovada estão registrados abaixo. Resultados humanos anteriores continuam associados à versão em que foram obtidos.
 
 A evidência histórica vem de [REVISAO-CETICA.md no repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) e do [histórico de versões](CHANGELOG.md). O registro privado exige acesso; a matriz e as notas atuais acompanham ambos os ZIPs. Registre aqui a versão do app/driver, macOS, consumidor, dispositivo e resultado ao executar um cenário novo.
 
-## Preparação 5.12.6 — 2026-10-14
+## Validação 5.12.6 — 2026-10-14
 
 Passaram **113 testes Swift**, **60 testes Python** e **10 testes do relay**, além dos harnesses do driver com **ASan/UBSan/TSan**. O driver possui regressões determinísticas de expiração, sobrescrita A → B → A e colisão de escritores, e stress com dois escritores/leitores. Os testes de desinstalação usam bundles falsos e não removem a instalação real. O benchmark sintético arm64 confirmou PCM válido bit idêntico e mediu o custo de publicação abaixo dos prazos nos blocos observados; não abriu HAL ou microfone.
 
@@ -14,7 +14,7 @@ Antes da revisão visual final, o build universal arm64/x86_64 passou sem avisos
 
 A revisão visual posterior reúne nível e gate em um único `NSSlider`, usando nível bruto em dB e o puxador original na mesma escala. O seletor fica no cartão Microfone e mostra a fonte capturada; a escolha persistida permanece no menu e na acessibilidade. Tiles centralizados, rótulos curtos e ícones no rodapé reduzem o texto; calibração, estado de pausa do monitor, ajuda e nomes de acessibilidade permanecem disponíveis. **Build universal e instalação desse desenho final passaram.** A sonda mediu 795 pt de conteúdo, frente aos 922 pt anteriores, e a captura nativa confirmou o painel inteiro sem cortes, os tiles centralizados, o seletor integrado, Entrada com um único slider, Saída separada e ícones no rodapé com ajuda/nomes AX. O `setValue` mudou gate 6 → 7 e limiar −36 → −35 dB, depois restaurado a +6. Nove preferências, altura +23, timbre +43, monitor desligado, login ativado e Dock foram preservados. A entrada permaneceu em −90 dB no ambiente observado: não há evidência de variação do medidor com voz nem de uso real do VoiceOver.
 
-O relay Sites **v4** foi publicado separadamente; `/health` e `/ready` retornaram HTTP 200, com `ready: true`. Nenhum envio real ao suporte faz parte dessas verificações. A leitura de release 5.12.5 no Sentry retornou 200; issues retornaram 403 com a credencial de releases, sem conclusão sobre ausência de erros.
+O relay Sites **v4** foi publicado separadamente; `/health` e `/ready` retornaram HTTP 200, com `ready: true`. Nenhum envio real ao suporte faz parte dessas verificações. A release técnica Sentry `mixer-de-audio-macos@5.12.6` foi sincronizada e relida, associada ao fonte `9fa15f75e2ca3d293d2e8edfdddcb835256dbfc1` e a um commit. A credencial continua restrita a releases; a consulta de issues permanece indisponível, sem conclusão sobre ausência de erros.
 
 | Cenário novo | Evidência automatizada | Conferência nativa e pendências |
 |---|---|---|
@@ -26,7 +26,9 @@ O relay Sites **v4** foi publicado separadamente; `/health` e `/ready` retornara
 | Presets e monitor pausado | Política comum para todas as aplicações de presets | Conferir explicação uniforme no painel, menu e janela |
 | Desinstalação completa | Cancelamento, falha parcial, symlink restante e sucesso com fixtures | Instalação via SelfInstaller concluída; não equivale a executar remoção completa na suíte |
 
-Não há nova chamada, gravação ou aprovação auditiva atribuída à 5.12.6. O estado final da entrega será registrado nas [notas próprias](releases/5.12.6.md).
+Os dois pacotes foram publicados, com downloads e `releases/latest` conferidos. O ZIP público e sua assinatura foram baixados sem credenciais; hashes, bytes e Ed25519 passaram. O app e o driver instalados coincidem com o ZIP público baixado e com o ZIP privado validado. Os quatro jobs da [CI 38599070069](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38599070069) passaram no fonte `9fa15f75e2ca3d293d2e8edfdddcb835256dbfc1`. A comparação das árvores conferiu nomes, tipos, permissões, destinos de links e bytes; não inclui timestamps ou atributos estendidos.
+
+Não há nova chamada, gravação ou aprovação auditiva atribuída à 5.12.6. O estado final da entrega está registrado nas [notas próprias](releases/5.12.6.md).
 
 ## Matriz
 
