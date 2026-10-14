@@ -10,6 +10,8 @@ A evidência histórica vem de [REVISAO-CETICA.md no repositório privado](https
 
 A preparação local passou 121 testes Swift e build universal; a sonda mediu 845 pt de altura natural. A instalação limpa e nove preferências foram recuperadas e conferidas, com driver 1.6, um registro canônico, instalador externo removido e Dock completo idêntico, sem itens próprios. Captura nativa e AX confirmaram painel inteiro sem área rolável, sliders cinza durante mudanças e switches neutros. Altura +23, timbre +43, monitor desligado e login ligado foram restaurados. A revisão posterior corrige o centro da pintura do puxador compacto e duas corridas de instalação; seus testes e a conferência dos pacotes finais ficam nas [notas 5.12.8](releases/5.12.8.md).
 
+A validação final passou 121 testes Swift, 79 Python, 10 do relay e sanitizers; quatro jobs da [CI do fonte publicado](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38646688474) aprovados. Os dois ZIPs e o download público coincidem com app/HAL instalados; HTTP 200, Ed25519 e 20 verificações passaram. Dez checks da instalação, nove preferências e Dock completo preservados; diagnóstico nativo zero falhas/zero reparos. Os três alertas de dependências de desenvolvimento foram corrigidos, com pnpm audit em zero; Worker publicado preservado.
+
 Trinta cenários raster comprovaram alinhamento e círculo inteiro nos hosts compactos; 36 cenários geométricos exercitaram telas e origens diferentes. Isso não constitui teste físico com múltiplos monitores, VoiceOver real, chamada ou nova aprovação auditiva. A usuária informou que o aplicativo parece estar funcionando bem; essa observação não substitui os cenários específicos ainda pendentes.
 
 ## Validação 5.12.7 — 2026-10-14

@@ -12,6 +12,7 @@ Este arquivo preserva integralmente as entradas de versão que estavam no README
 - Painel no canto superior direito, escala proporcional à área útil do monitor e altura real do conteúdo, sem rolagem. A célula nativa centraliza trilho e puxador para evitar o corte do círculo no host compacto.
 - Instaladores de aplicativo e driver revalidam a versão do destino após a autorização/preparação e recusam downgrade concorrente. Regressões usam código real com bundles falsos, incluindo versões numéricas e rollback.
 - Ferramentas de desenvolvimento do suporte atualizadas para eliminar os pacotes vulneráveis de Drizzle ORM/esbuild. Lockfile congelado, geração de schema sem mudanças, testes e artefato validados; Worker publicado preservado.
+- Publicação e download público conferidos; 20 verificações de assinatura/instalação aprovadas, quatro jobs da CI final verdes, Sentry e Notion sincronizados e relidos. Os três alertas de dependências foram marcados como corrigidos pelo GitHub.
 - DSP/WSOLA, gate, buffers, cadência dos medidores, driver 1.6, ajustes de voz e Dock opcional preservados. Resultados locais, instalação, publicação e limites nas [notas 5.12.8](releases/5.12.8.md); artefatos anteriores preservados.
 
 ## Versão 5.12.7 — VU responsivo e preset atual — 2026-10-14

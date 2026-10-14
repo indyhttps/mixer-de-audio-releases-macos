@@ -6,7 +6,7 @@
 
 O Mixer captura seu microfone real, altera a voz em tempo real e entrega o resultado para chamadas, gravações e jogos. O aplicativo fica na barra de menus do macOS e usa seu próprio driver virtual; não precisa de BlackHole.
 
-Este é o manual da **5.12.8**, com aparência constante durante a interação e painel ajustado ao monitor, no canto superior direito, sem rolagem. Os instaladores também revalidam a versão imediatamente antes de substituir o aplicativo ou o driver, recusando uma versão mais antiga se outra instalação tiver avançado durante a autorização. Baixe a distribuição nas [releases públicas](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest) e consulte as [notas da versão](docs/releases/5.12.8.md) para conhecer os resultados e limites. O pacote com código-fonte fica somente no [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases). Os artefatos anteriores permanecem preservados.
+Este é o manual da **5.12.8**, com aparência constante durante a interação e painel ajustado ao monitor, no canto superior direito, sem rolagem. Os instaladores também revalidam a versão imediatamente antes de substituir o aplicativo ou o driver, recusando uma versão mais antiga se outra instalação tiver avançado durante a autorização. Baixe a distribuição nas [releases públicas](https://github.com/indyhttps/mixer-de-audio-releases-macos/releases/latest) e consulte as [notas da versão](docs/releases/5.12.8.md) para conhecer os resultados e limites. A instalação final, os dois pacotes e o download público sem credenciais foram conferidos; assinatura Ed25519 e igualdade com app/driver instalados passaram. O pacote com código-fonte fica somente no [repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/releases). Os artefatos anteriores permanecem preservados.
 
 A 5.12.8 conserva o **driver 1.6**, introduzido e publicado na 5.12.6, que impede a leitura de áudio antigo após uma volta do buffer ou uma sobrescrita concorrente. Ele conserva a única entrada virtual **Mixer de Áudio — Microfone**, a mesma seleção para chamadas, gravações e jogos. O dispositivo **Mixer de Áudio** continua oferecendo somente a saída que alimenta esse microfone. O motor WSOLA, o gate e os valores de voz permanecem iguais. Atualizar o driver 1.5 ou anterior exige autorização de administrador e uma recarga do serviço de áudio. Faça esse passo fora de uma chamada e reabra os aplicativos de áudio depois.
 
@@ -116,8 +116,8 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 | A arquitetura, os testes e a distribuição | [Guia de desenvolvimento](docs/DEVELOPMENT.md) |
 | Os cenários conferidos e as pendências de campo | [Compatibilidade](docs/COMPATIBILITY.md) |
 | O histórico completo de versões | [Changelog](docs/CHANGELOG.md) |
-| A entrega atual | [Notas 5.12.7 — VU responsivo e preset atual](docs/releases/5.12.7.md) |
-| A entrega anterior | [Notas 5.12.6 — confiabilidade do áudio e da manutenção](docs/releases/5.12.6.md) |
+| A entrega atual | [Notas 5.12.8 — aparência constante e painel por monitor](docs/releases/5.12.8.md) |
+| A entrega anterior | [Notas 5.12.7 — VU responsivo e preset atual](docs/releases/5.12.7.md) |
 | As melhorias da 5.11.0 | [Registro das melhorias](docs/IMPROVEMENTS-5.11.0.md) |
 | As regras e os resultados de revisão | [AGENTS — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) · [REVISAO-CETICA — privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) |
 
@@ -125,6 +125,7 @@ O pacote também inclui **Desinstalar Mixer de Áudio.command** para limpeza das
 
 | Versão | Assunto |
 |---|---|
+| [5.12.7](docs/releases/5.12.7.md) | VU responsivo e preset atual |
 | [5.12.6](docs/releases/5.12.6.md) | Confiabilidade do driver, interface e manutenção |
 | [5.12.5](docs/releases/5.12.5.md) | Dock opcional |
 | [5.12.4](docs/releases/5.12.4.md) | Desinstalação e envio de suporte |
