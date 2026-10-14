@@ -1,10 +1,16 @@
 # Compatibilidade e validação de campo
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.7.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.8.md)
 
-Esta matriz separa a **5.12.7/driver 1.6** dos resultados da **5.12.6** e de versões anteriores. Os **121 testes Swift**, o build universal e os pacotes passaram; a sonda mediu **845 pt**, e a reinstalação limpa foi concluída e conferida. A apresentação instalada inclui Microfone em cartão próprio, Níveis separado, nome do preset e legendas do rodapé. A entrada continua sendo **Mixer de Áudio — Microfone**; DSP, driver, gate, buffers e Dock opcional são preservados. Resultados anteriores não constituem novos testes desta versão.
+Esta matriz registra a **5.12.8/driver 1.6** separadamente das versões anteriores. O painel preserva o acabamento durante a interação e ajusta a escala ao monitor para mostrar tudo sem rolagem. A entrada continua sendo **Mixer de Áudio — Microfone**; DSP, driver, gate, buffers e Dock opcional são preservados. Resultados anteriores não constituem novos testes desta versão.
 
 A evidência histórica vem de [REVISAO-CETICA.md no repositório privado](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md) e do [histórico de versões](CHANGELOG.md). O registro privado exige acesso; a matriz e as notas atuais acompanham ambos os ZIPs. Registre aqui a versão do app/driver, macOS, consumidor, dispositivo e resultado ao executar um cenário novo.
+
+## Validação 5.12.8 — 2026-10-14
+
+A preparação local passou 121 testes Swift e build universal; a sonda mediu 845 pt de altura natural. A instalação limpa e nove preferências foram recuperadas e conferidas, com driver 1.6, um registro canônico, instalador externo removido e Dock completo idêntico, sem itens próprios. Captura nativa e AX confirmaram painel inteiro sem área rolável, sliders cinza durante mudanças e switches neutros. Altura +23, timbre +43, monitor desligado e login ligado foram restaurados. A revisão posterior corrige o centro da pintura do puxador compacto e duas corridas de instalação; seus testes e a conferência dos pacotes finais ficam nas [notas 5.12.8](releases/5.12.8.md).
+
+Trinta cenários raster comprovaram alinhamento e círculo inteiro nos hosts compactos; 36 cenários geométricos exercitaram telas e origens diferentes. Isso não constitui teste físico com múltiplos monitores, VoiceOver real, chamada ou nova aprovação auditiva. A usuária informou que o aplicativo parece estar funcionando bem; essa observação não substitui os cenários específicos ainda pendentes.
 
 ## Validação 5.12.7 — 2026-10-14
 

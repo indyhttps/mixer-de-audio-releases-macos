@@ -1,8 +1,16 @@
 # Desenvolvimento do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.7.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.8.md)
 
-Este guia descreve a arquitetura e o fluxo de trabalho do código **5.12.7**. A 5.12.6 conserva seus resultados e snapshots próprios. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [AGENTS.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas da preparação acompanham ambos os ZIPs, enquanto os resultados posteriores ficam no registro editorial.
+Este guia descreve a arquitetura e o fluxo de trabalho do código **5.12.8**. A 5.12.7 conserva seus resultados e snapshots próprios. Os comandos abaixo são procedimentos; resultados de uma execução, aprovação auditiva e publicação devem ser registrados separadamente nas notas da release e em [REVISAO-CETICA.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/REVISAO-CETICA.md). As regras de [AGENTS.md](https://github.com/indyhttps/MixerDeAudio-macOS/blob/main/AGENTS.md) continuam obrigatórias. Esses dois registros pertencem ao repositório privado e exigem acesso; os manuais de uso e as notas da preparação acompanham ambos os ZIPs, enquanto os resultados posteriores ficam no registro editorial.
+
+Na 5.12.8, o painel principal usa `ultraThinMaterial` com contorno escuro constante. `CCNeutralSwitchStyle` conserva papel/valor acessível e foco cinza, com Espaço tratado localmente. `CCNativeSlider` mantém o AppKit responsável por rastreamento, teclado e acessibilidade; a pintura centraliza trilho e círculo no host compacto. Parâmetros contínuos e gate de 1 dB usam a mesma célula. O nível real de Entrada conserva seu destaque funcional.
+
+`ControlWindow` recalcula a escala por `NSScreen.visibleFrame` e altura natural do conteúdo, com largura de referência 320 pt e margens de 10 pt à direita/20 pt no topo. A abertura pela barra de menus usa sua tela; reabertura e lançamento usam a tela do ponteiro. Mudanças de tela e conteúdo também atualizam a escala. Não há `ScrollView` no painel principal.
+
+Os instaladores revalidam identidade e versão do destino depois da autorização: o driver compara componentes numéricos antes de mover o bundle; o aplicativo relê `CFBundleVersion` nas duas validações do `VerifiedBundleReplacement`, inclusive imediatamente antes da troca. Regressões extraem o código real e usam bundles/ferramentas falsos para comprovar downgrade recusado e rollback, sem alterar a instalação real.
+
+## Registro da entrega anterior 5.12.7
 
 Na 5.12.7, `LevelMeterDemand` solicita 60 Hz enquanto o painel está visível e 10 Hz para diagnóstico/calibração ocultos. Sem consumidores, o timer para. O callback lê a telemetria mais recente diretamente na thread principal, sem tarefa assíncrona por tick, e só publica valores alterados. O medidor de Saída deixa de interpolar por 80 ms; isso não reduz a latência física do áudio nem garante sincronização com telas de 120 Hz. A coleta própria da calibração continua em 100 ms.
 

@@ -1,8 +1,8 @@
 # Mapa do projeto
 
-**Versão atual:** 5.12.7 · **Driver:** 1.6 · **Mínimo:** macOS 15
+**Versão atual:** 5.12.8 · **Driver:** 1.6 · **Mínimo:** macOS 15
 
-Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A **5.12.7** atualiza o VU visível a 60 Hz, conserva 10 Hz para diagnóstico/calibração ocultos, mostra o nome do preset atual e recupera as legendas do rodapé e o alinhamento à esquerda de Voz/Microfone. O seletor fica no cartão próprio Microfone, separado de Níveis. Os **121 testes Swift**, o build universal e os pacotes passaram; a sonda mediu **845 pt**, e a reinstalação limpa foi concluída pelos instaladores nativos, com app/driver iguais aos dois ZIPs locais e níveis reais variando. A CI remota não executou testes por restrição de execução no GitHub Actions. As [notas atuais](releases/5.12.7.md) registram resultados e limites; a [5.12.6](releases/5.12.6.md) conserva seus artefatos e evidências próprios.
+Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mixer de Áudio. A **5.12.8** conserva o acabamento durante a interação, com superfícies discretas, controles neutros e painel inteiro no canto superior direito, ajustado à área útil do monitor sem rolagem. Corrige também a pintura do puxador compacto e protege aplicativo e driver contra downgrade depois da autorização. O processamento de voz, driver 1.6, gate, buffers e medidores permanecem iguais. As [notas atuais](releases/5.12.8.md) registram resultados e limites; versões anteriores conservam seus artefatos e evidências próprios.
 
 ## Por onde começar
 
@@ -16,8 +16,8 @@ Este mapa reúne os caminhos para usar, desenvolver, verificar e distribuir o Mi
 | Resolver falta de som | [Roteiro de diagnóstico](../README.md#quando-falta-som) |
 | Entender o código e compilar | [Guia de desenvolvimento](DEVELOPMENT.md) |
 | Conferir cenários testados e pendentes | [Compatibilidade](COMPATIBILITY.md) |
-| Ver a entrega atual | [Notas 5.12.7](releases/5.12.7.md) |
-| Consultar a entrega anterior | [Notas 5.12.6](releases/5.12.6.md) |
+| Ver a entrega atual | [Notas 5.12.8](releases/5.12.8.md) |
+| Consultar a entrega anterior | [Notas 5.12.7](releases/5.12.7.md) |
 | Consultar decisões e versões anteriores | [Histórico](CHANGELOG.md) |
 
 ## Pastas e arquivos principais
@@ -99,8 +99,8 @@ Execute os comandos a partir da raiz do código-fonte. O [guia de desenvolviment
 | Rodar testes de manifesto, instalação e publicação | `python3 -m unittest discover -s Tests/Release -p 'test_*.py'` |
 | Compilar app e driver universais | `./build.sh` |
 | Preparar e validar os dois ZIPs | `./release.sh` |
-| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.7.md --dry-run` |
-| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.7.md` |
+| Conferir o plano de publicação | `./publicar.sh docs/releases/5.12.8.md --dry-run` |
+| Publicar o mesmo fonte e os pacotes já validados | `./publicar.sh docs/releases/5.12.8.md` |
 | Remover a própria instalação | `Desinstalar Mixer de Áudio.command` ou a opção Desinstalar no app |
 
 | Ferramentas em `tools/` | Responsabilidade |
@@ -135,15 +135,17 @@ Nenhum segredo, chave privada, relatório pessoal ou backup privado deve ser cop
 
 ## Distribuição e conectores
 
+A **5.12.8** reúne aparência constante, escala por monitor e proteção dos instaladores. Os resultados da preparação local estão nas [notas 5.12.8](releases/5.12.8.md). Publicação, download e sincronização posteriores serão registrados editorialmente após conferência; os manifestos e ZIPs conservam o fonte de sua criação.
+
 A **5.12.7** tem pacotes validados a partir do fonte `5b631f66ffb987505b07b0d8150f676ed4037521`, reinstalação limpa conferida e assinatura Ed25519 do ZIP público. Nove preferências foram recuperadas de um backup anterior validado; o Dock permaneceu idêntico antes e depois da reinstalação, sem atalho próprio do Mixer. A [CI 38609884214](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38609884214) terminou sem executar os quatro jobs por restrição de execução no GitHub Actions; isso não substitui nem invalida os resultados locais. Os dois pacotes foram publicados e conferidos; o download público sem credenciais e Ed25519 passaram, e as árvores de app/driver instalados coincidem com o ZIP baixado. A auditoria posterior aprovou os oito checks de artefatos/instalação. Na comparação histórica, 8/10: duas chaves do gate diferiam do backup recuperado anteriormente, além da diferença preexistente do Dock. Preferências e Dock completos permaneceram iguais durante a auditoria, sem atribuição de autoria às diferenças. Os registros anteriores abaixo continuam associados à versão indicada.
 
 | Destino | O que fica nele |
 |---|---|
-| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.7.zip` |
+| [GitHub privado](https://github.com/indyhttps/MixerDeAudio-macOS) | Fonte, documentação técnica, testes, commit/tag e ZIP completo `Mixer-de-Audio-v5.12.8.zip` |
 | [GitHub público](https://github.com/indyhttps/mixer-de-audio-releases-macos) | README de downloads, manuais e releases de `mixer-de-audio-macos.zip` com assinatura `.sig` |
 | Sites | Relay versão 4 publicado separadamente; `/health` e `/ready` conferidos com HTTP 200, `ready: true`, sem envio de relatório |
-| [Notion](https://app.notion.com/p/39fb69db4e188113a17ce909f6718720) | Registro 5.12.7 atualizado e relido, com instalação, publicação, auditoria e limites; histórico e demais projetos preservados |
-| Sentry | Release `mixer-de-audio-macos@5.12.7` sincronizada e relida, vinculada ao fonte `5b631f66` e a um commit; leitura de issues indisponível com a credencial restrita |
+| [Notion](https://app.notion.com/p/39fb69db4e188113a17ce909f6718720) | Registro do projeto, com histórico e demais projetos preservados; estado da sincronização nas notas atuais |
+| Sentry | Metadados da release associados ao fonte publicado; leitura de issues indisponível com a credencial restrita (HTTP 403 confirmado) |
 
 A entrega 5.12.6 tem 113 testes Swift, 60 testes Python e 10 testes do relay aprovados, além dos harnesses do driver e benchmark arm64. O build universal e a instalação via SelfInstaller do desenho final foram confirmados. O painel de 795 pt apareceu inteiro, com Entrada e gate no mesmo slider, seletor integrado, tiles centralizados e rodapé de ícones com ajuda/AX. O teste do gate 6 → 7 refletiu −36 → −35 dB e terminou restaurado em +6; os nove ajustes e o Dock foram preservados. A entrada estava em silêncio (−90 dB), sem comprovar movimento do medidor com voz ou uso real do VoiceOver. O diagnóstico anterior registrou zero falhas e zero reparos. Os dois pacotes foram publicados, com downloads e `releases/latest` conferidos. O ZIP público e sua assinatura foram baixados sem credenciais; hashes, bytes e Ed25519 passaram. O app e o driver instalados coincidem com o ZIP público baixado e com o ZIP privado validado. Os quatro jobs da [CI 38599070069](https://github.com/indyhttps/MixerDeAudio-macOS/actions/runs/38599070069) passaram no fonte `9fa15f75e2ca3d293d2e8edfdddcb835256dbfc1`. ZIPs, manifestos e tag do fonte conservam esse commit; a tag pública conserva `d904eba6a386f5347cb159d61f52609ac6edefc9`, e o registro editorial final fica em `main`. O relay Sites v4 foi publicado de forma independente.
 
@@ -163,6 +165,7 @@ A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacot
 
 | Release | Assunto |
 |---|---|
+| [5.12.8](releases/5.12.8.md) | Aparência constante, painel por monitor e instaladores protegidos |
 | [5.12.7](releases/5.12.7.md) | VU responsivo, preset atual e cartão Microfone |
 | [5.12.6](releases/5.12.6.md) | Confiabilidade do driver, interface e manutenção; entrega publicada |
 | [5.12.5](releases/5.12.5.md) | Dock opcional e instalação sem fixação automática |
@@ -176,4 +179,4 @@ A tag, a versão e o commit da entrega devem corresponder aos manifestos e pacot
 | [5.11.0](releases/5.11.0.md) | Melhorias de configuração, diagnóstico e confiabilidade |
 | [5.10.4](releases/5.10.4.md) | Distribuição e verificações da versão anterior |
 
-Notas antigas preservam o contexto da versão em que foram escritas. As verificações atuais ficam nas notas 5.12.7; confirmações humanas anteriores não são apresentadas como novos testes desta versão.
+Notas antigas preservam o contexto da versão em que foram escritas. As verificações atuais ficam nas notas 5.12.8; confirmações humanas anteriores não são apresentadas como novos testes desta versão.

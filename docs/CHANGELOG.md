@@ -1,10 +1,17 @@
 # Histórico do Mixer de Áudio
 
-**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.7.md)
+**Navegação:** [Mapa do projeto](INDEX.md) · [Manual de uso](../README.md) · [Notas atuais](releases/5.12.8.md)
 
 Este arquivo preserva integralmente as entradas de versão que estavam no README. Elas descrevem o comportamento e as verificações de cada época; os procedimentos atuais ficam no [manual](../README.md) e no [guia de desenvolvimento](DEVELOPMENT.md).
 
 ---
+
+## Versão 5.12.8 — aparência constante e painel por monitor — 2026-10-14
+
+- Material translúcido estável e contornos escuros discretos; sliders, switches e presets rápidos mantêm superfície neutra durante interação, com foco e estados acessíveis.
+- Painel no canto superior direito, escala proporcional à área útil do monitor e altura real do conteúdo, sem rolagem. A célula nativa centraliza trilho e puxador para evitar o corte do círculo no host compacto.
+- Instaladores de aplicativo e driver revalidam a versão do destino após a autorização/preparação e recusam downgrade concorrente. Regressões usam código real com bundles falsos, incluindo versões numéricas e rollback.
+- DSP/WSOLA, gate, buffers, cadência dos medidores, driver 1.6, ajustes de voz e Dock opcional preservados. Resultados locais, instalação, publicação e limites nas [notas 5.12.8](releases/5.12.8.md); artefatos anteriores preservados.
 
 ## Versão 5.12.7 — VU responsivo e preset atual — 2026-10-14
 
